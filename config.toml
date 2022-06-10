@@ -24,7 +24,7 @@ search = 'https://docs.rs/{}/latest/{}'
 [shortcuts.gh]
 default = 'https://github.com'
 search = 'https://github.com/search?utf8=%E2%9C%93&q={}'
-ext.'@[\w-]+' = 'https://github.com/{}'
+ext.'(?:@)[\w-]+' = 'https://github.com/{}'
 
 # GitHub Gist
 [shortcuts.gist]
@@ -35,7 +35,7 @@ search = 'https://gist.github.com/search?q={}'
 [shortcuts.gl]
 default = 'https://gitlab.com'
 search = 'https://gitlab.com/search?utf8=%E2%9C%93&search={}'
-ext.'@[\w-]+' = 'https://gitlab.com/{}'
+ext.'(?:@)[\w-]+' = 'https://gitlab.com/{}'
 
 # Lib.rs
 [shortcuts.librs]
@@ -73,4 +73,4 @@ search = 'https://stackoverflow.com/search?q={}'
 [shortcuts.tw]
 default = 'https://twitter.com/explore'
 search = 'https://twitter.com/search?q={}'
-ext.'@\w+' = 'https://twitter.com/{}'
+ext.'(?:@)\w+' = 'https://twitter.com/{}'

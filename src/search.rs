@@ -1,8 +1,7 @@
-use std::sync::Arc;
-
 use axum::extract::Query;
 use axum::response::{IntoResponse, Redirect};
 use axum::Extension;
+use regex::Regex;
 use serde::Deserialize;
 
 use crate::config::{Config, Shortcut};
@@ -14,10 +13,10 @@ pub struct Search {
     pub q: String,
 }
 
-#[tracing::instrument(skip_all, fields(query = %q))]
 pub async fn handler(
     Query(Search { ref q }): Query<Search>,
-    Extension(cfg): Extension<Arc<Config>>,
+    Extension(cfg): Extension<Config>,
+    Extension(re): Extension<Vec<(Regex, &str)>>,
 ) -> impl IntoResponse {
     let args = q.trim().split_whitespace().collect::<Vec<_>>();
     match args.get(0) {
@@ -33,11 +32,13 @@ pub async fn handler(
                 }
                 Some(ext) => {
                     if args.len() > 1 {
-                        if let Some(s) = ext.get(args[1]) {
-                            Redirect::to(&s.replace("{}", q))
-                        } else {
-                            Redirect::to(&table.search.replace("{}", q))
-                        }
+                        ext.get(args[1]).map_or_else(
+                            || Redirect::to(&table.search.replace("{}", q)),
+                            |s| match re.iter().find(|(re, _)| re.is_match(s)) {
+                                Some((re, s)) => Redirect::to(&re.replace_all(s, args[1])),
+                                None => Redirect::to(&table.search.replace("{}", q)),
+                            },
+                        )
                     } else {
                         Redirect::to(table.default)
                     }

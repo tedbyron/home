@@ -23,7 +23,7 @@ features = ["rt-multi-thread", "macros", "signal", "parking_lot"]
 
 [dependencies.tracing-subscriber]
 version = "0.3.11"
-features = ["std", "env-filter", "fmt", "ansi", "smallvec", "parking_lot"]
+features = ["std", "env-filter", "fmt", "ansi", "smallvec", "parking_lot", "registry"]
 
 [profile.dev]
 debug = 0

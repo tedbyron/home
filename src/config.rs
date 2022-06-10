@@ -3,7 +3,7 @@ use std::collections::HashMap;
 use serde::{Deserialize, Deserializer};
 
 /// Server, search, and shortcut configuration.
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Clone, Deserialize)]
 pub struct Config {
     /// The local port to bind to.
     port: u16,
@@ -19,7 +19,7 @@ pub struct Config {
 }
 
 /// Shortcut to one or more URLs.
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Clone, Deserialize)]
 #[serde(untagged)]
 pub enum Shortcut {
     /// Table with shortcut definitions for multiple URLs.
@@ -29,7 +29,7 @@ pub enum Shortcut {
 }
 
 /// Shortcut definitions for multiple URLs.
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Clone, Deserialize)]
 pub struct ShortcutTable {
     /// Default URL if no more arguments were passed to the shortcut.
     pub default: &'static str,
