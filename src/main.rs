@@ -4,15 +4,13 @@
 use std::net::SocketAddr;
 use std::process::ExitCode;
 use std::time::Duration;
-use std::{env, fs};
 
-use anyhow::{bail, Context, Result};
+use anyhow::Result;
 use axum::handler::Handler;
 use axum::http::StatusCode;
 use axum::response::Response;
 use axum::routing::get;
 use axum::{Extension, Router, Server};
-use once_cell::sync::OnceCell;
 use regex::Regex;
 use tokio::sync::oneshot;
 use tower_http::classify::ServerErrorsFailureClass;
@@ -26,9 +24,6 @@ mod config;
 mod search;
 
 use config::{Config, Shortcut};
-
-/// String buffer for config file data.
-pub static CFG_BUF: OnceCell<String> = OnceCell::new();
 
 #[tokio::main]
 async fn main() -> ExitCode {
@@ -52,25 +47,7 @@ async fn run() -> Result<()> {
         .with(tracing_subscriber::fmt::layer())
         .init();
 
-    let mut cfg_path = env::current_exe()?.join("config.toml");
-    if !cfg_path.is_file() {
-        cfg_path = env::current_dir()?.join("config.toml");
-
-        if !cfg_path.is_file() {
-            bail!("config not found in the executable's directory or the current directory");
-        }
-    }
-
-    debug!(cfg_path = %cfg_path.display());
-
-    CFG_BUF
-        .set(
-            fs::read_to_string(&cfg_path)
-                .with_context(|| format!("failed to read config file {}", cfg_path.display()))?,
-        )
-        .unwrap();
-    let cfg = toml::from_str::<Config>(CFG_BUF.get().unwrap())
-        .with_context(|| format!("failed to deserialize config file {}", cfg_path.display()))?;
+    let cfg = Config::load()?;
     let re = cfg
         .shortcuts
         .iter()
@@ -83,9 +60,6 @@ async fn run() -> Result<()> {
         })
         .flatten()
         .collect::<Vec<_>>();
-    let cfg = cfg;
-
-    debug!(?cfg);
 
     let (shutdown_tx, shutdown_rx) = oneshot::channel::<()>();
     tokio::spawn(async move {

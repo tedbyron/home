@@ -1,6 +1,12 @@
-use std::collections::HashMap;
+use std::{collections::HashMap, env, fs};
 
+use anyhow::{bail, Context, Result};
+use once_cell::sync::OnceCell;
 use serde::{Deserialize, Deserializer};
+use tracing::debug;
+
+/// String buffer for config file data.
+static CFG_BUF: OnceCell<String> = OnceCell::new();
 
 /// Server, search, and shortcut configuration.
 #[derive(Debug, Clone, Deserialize)]
@@ -51,6 +57,33 @@ where
 }
 
 impl Config {
+    /// Load the config file.
+    pub fn load() -> Result<Self> {
+        let mut cfg_path = env::current_exe()?.join("config.toml");
+        if !cfg_path.is_file() {
+            cfg_path = env::current_dir()?.join("config.toml");
+
+            if !cfg_path.is_file() {
+                bail!("config not found in the executable's directory or the current directory");
+            }
+        }
+
+        debug!(cfg_path = %cfg_path.display());
+
+        CFG_BUF
+            .set(
+                fs::read_to_string(&cfg_path).with_context(|| {
+                    format!("failed to read config file {}", cfg_path.display())
+                })?,
+            )
+            .unwrap();
+        let cfg = toml::from_str(CFG_BUF.get().unwrap())
+            .with_context(|| format!("failed to deserialize config file {}", cfg_path.display()))?;
+        debug!(?cfg);
+
+        Ok(cfg)
+    }
+
     /// Returns the local port for the server bind to.
     pub const fn port(&self) -> u16 {
         self.port
