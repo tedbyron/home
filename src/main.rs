@@ -11,7 +11,7 @@ use axum::http::StatusCode;
 use axum::routing::get;
 use axum::{Router, Server};
 use tokio::sync::oneshot;
-use tracing::{debug, error};
+use tracing::{debug, error, info};
 use tracing_subscriber::filter::{EnvFilter, LevelFilter};
 
 mod config;
@@ -24,7 +24,7 @@ async fn main() -> ExitCode {
     match run().await {
         Ok(_) => ExitCode::SUCCESS,
         Err(e) => {
-            error!("{e}");
+            error!("{e:?}");
             ExitCode::FAILURE
         }
     }
@@ -54,10 +54,14 @@ async fn run() -> Result<()> {
 
     let cfg_buf = fs::read_to_string(&cfg_path)
         .with_context(|| format!("failed to read config file {}", cfg_path.display()))?;
-    let cfg: Config<'_> = toml::from_str(&cfg_buf)
+    let cfg = toml::from_str::<Config<'_>>(&cfg_buf)
         .with_context(|| format!("failed to deserialize config file {}", cfg_path.display()))?;
 
-    debug!(cfg = %format!("{:#?}", cfg));
+    if LevelFilter::current() <= LevelFilter::DEBUG {
+        info!(?cfg);
+    } else {
+        debug!(cfg = %format!("{cfg:#?}"));
+    }
 
     let (shutdown_tx, shutdown_rx) = oneshot::channel::<()>();
     tokio::spawn(async move {
@@ -70,6 +74,8 @@ async fn run() -> Result<()> {
         .route("/search", get(search::handler))
         .fallback((|| async { StatusCode::NOT_FOUND }).into_service());
     let addr = SocketAddrV4::new(Ipv4Addr::LOCALHOST, cfg.port);
+
+    info!("listening on {addr}");
 
     Server::bind(&addr.into())
         .serve(app.into_make_service())
