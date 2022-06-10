@@ -1,2 +1,2 @@
 # home
-Customizable search engine and home page for browsers
+Customizable search shortcuts and home page for browsers

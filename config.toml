@@ -1,0 +1,63 @@
+# Local port to bind to
+port = 8072
+# Default search engine if no shortcut
+default_search = "https://duckduckgo.com/?q=%s"
+
+# Crates.io
+[shortcuts.crates]
+default = "https://crates.io"
+search = "https://crates.io/search?q=%s"
+
+# GitHub
+[shortcuts.gh]
+default = "https://github.com"
+search = "https://github.com/search?utf8=%E2%9C%93&q=%s"
+
+# GitHub Gist
+[shortcuts.gist]
+default = "https://gist.github.com"
+search = "https://gist.github.com/search?q=%s"
+
+# GitLab
+[shortcuts.gl]
+default = "https://gitlab.com"
+search = "https://gitlab.com/search?utf8=%E2%9C%93&search=%s"
+
+# Lib.rs
+[shortcuts.librs]
+default = "https://lib.rs"
+search = "https://lib.rs/search?q=%s"
+
+# MDN
+[shortcuts.mdn]
+default = "https://developer.mozilla.org/en-US/"
+search = "https://developer.mozilla.org/en-US/search?q=%s"
+
+# Reddit
+[shortcuts.r]
+default = "https://www.reddit.com"
+search = "https://www.reddit.com/search?q=%s"
+# Shortcut extension to the current user profile
+ext.me = "https://www.reddit.com/user/me"
+
+# Rust stable docs
+[shortcuts.rs]
+default = "https://doc.rust-lang.org/stable/std/"
+search = "https://doc.rust-lang.org/stable/std/?search=%s"
+
+# Rust nightly docs
+[shortcuts.rsn]
+default = "https://doc.rust-lang.org/nightly/std/"
+search = "https://doc.rust-lang.org/nightly/std/?search=%s"
+
+# Stack Overflow
+[shortcuts.so]
+default = "https://stackoverflow.com"
+search = "https://stackoverflow.com/search?q=%s"
+
+# Twitter
+[shortcuts.tw]
+default = "https://twitter.com/explore"
+search = "https://twitter.com/search?q=%s"
+# Shortcut extension to a user profile
+ext."@%s" = "https://twitter.com/%s"
