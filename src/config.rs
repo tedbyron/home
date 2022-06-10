@@ -1,5 +1,6 @@
 use std::collections::HashMap;
 
+/// Server, search, and shortcuts configuration.
 #[derive(Debug, serde::Deserialize)]
 pub struct Config<'a> {
     /// The local address to bind to.
@@ -9,19 +10,21 @@ pub struct Config<'a> {
     /// search query is not a valid shortcut.
     #[serde(default = "default_search")]
     pub default_search: &'a str,
-    /// Map of shortcuts to search engines
+    /// Map of shortcuts to URLs.
     pub shortcuts: HashMap<&'a str, Shortcut<'a>>,
 }
 
-/// A shortcut to one or more URLs.
+/// Shortcut to one or more URLs.
 #[derive(Debug, serde::Deserialize)]
 #[serde(untagged)]
 pub enum Shortcut<'a> {
+    /// Table with shortcut definitions for multiple URLs.
     Table(ShortcutTable<'a>),
+    /// Shortcut to a URL.
     Value(&'a str),
 }
 
-/// Shortcuts to multiple URLs.
+/// Shortcut definitions for multiple URLs.
 #[derive(Debug, serde::Deserialize)]
 pub struct ShortcutTable<'a> {
     /// Default URL if no more arguments are passed to the shortcut.
@@ -32,9 +35,10 @@ pub struct ShortcutTable<'a> {
     pub ext: Option<HashMap<&'a str, &'a str>>,
 }
 
-pub const fn default_port() -> u16 {
+const fn default_port() -> u16 {
     8072
 }
-pub const fn default_search() -> &'static str {
+
+const fn default_search() -> &'static str {
     "https://www.google.com/search?q=%s"
 }

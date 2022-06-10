@@ -1,6 +1,6 @@
-# Local port to bind to
+# Local port for the web server to bind to. Defaults to 8072.
 port = 8072
-# Default search engine if no shortcut
+# Default search engine if no shortcut was used. Defaults to "https://www.google.com/search?q=%s".
 default_search = "https://duckduckgo.com/?q=%s"
 
 # Crates.io
