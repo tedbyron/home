@@ -2,41 +2,41 @@ use std::collections::HashMap;
 
 use serde::{Deserialize, Deserializer};
 
-/// Server, search, and shortcuts configuration.
+/// Server, search, and shortcut configuration.
 #[derive(Debug, Deserialize)]
-pub struct Config<'a> {
-    /// The local address to bind to.
-    pub port: u16,
+pub struct Config {
+    /// The local port to bind to.
+    port: u16,
     /// Default URL if no input is provided.
-    pub default_empty: &'a str,
+    pub default: &'static str,
     /// Default search URL if no shortcut was used.
-    pub default_search: &'a str,
+    pub search: &'static str,
     /// Shortcut prefix.
     #[serde(deserialize_with = "deserialize_prefix", default)]
-    pub prefix: Option<&'a str>,
+    pub prefix: Option<&'static str>,
     /// Map of shortcuts to URLs.
-    pub shortcuts: HashMap<&'a str, Shortcut<'a>>,
+    pub shortcuts: HashMap<&'static str, Shortcut>,
 }
 
 /// Shortcut to one or more URLs.
 #[derive(Debug, Deserialize)]
 #[serde(untagged)]
-pub enum Shortcut<'a> {
+pub enum Shortcut {
     /// Table with shortcut definitions for multiple URLs.
-    Table(ShortcutTable<'a>),
+    Table(ShortcutTable),
     /// Shortcut to a URL.
-    Value(&'a str),
+    Value(&'static str),
 }
 
 /// Shortcut definitions for multiple URLs.
 #[derive(Debug, Deserialize)]
-pub struct ShortcutTable<'a> {
-    /// Default URL if no more arguments are passed to the shortcut.
-    pub default: &'a str,
-    /// Search URL.
-    pub search: &'a str,
+pub struct ShortcutTable {
+    /// Default URL if no more arguments were passed to the shortcut.
+    pub default: &'static str,
+    /// Default search URL for the shortcut.
+    pub search: &'static str,
     /// Shortcut extension to a specific URL. Optionally may contain `{}`.
-    pub ext: Option<HashMap<&'a str, &'a str>>,
+    pub ext: Option<HashMap<&'static str, &'static str>>,
 }
 
 fn deserialize_prefix<'de, D>(deserializer: D) -> Result<Option<&'de str>, D::Error>
@@ -47,5 +47,12 @@ where
         Some(s) if s.is_empty() || s.contains(char::is_whitespace) => Ok(None),
         Some(s) => Ok(Some(s)),
         None => Ok(None),
+    }
+}
+
+impl Config {
+    /// Returns the local port for the server bind to.
+    pub const fn port(&self) -> u16 {
+        self.port
     }
 }
