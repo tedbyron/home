@@ -1,5 +1,4 @@
 #![warn(clippy::all, clippy::nursery, rust_2018_idioms)]
-#![doc = include_str!("../README.md")]
 
 use std::net::SocketAddr;
 use std::process::ExitCode;
@@ -11,7 +10,6 @@ use axum::http::StatusCode;
 use axum::response::Response;
 use axum::routing::get;
 use axum::{Extension, Router, Server};
-use regex::Regex;
 use tokio::sync::oneshot;
 use tower_http::classify::ServerErrorsFailureClass;
 use tower_http::trace::TraceLayer;
@@ -22,8 +20,6 @@ use tracing_subscriber::util::SubscriberInitExt;
 
 mod config;
 mod search;
-
-use config::{Config, Shortcut};
 
 #[tokio::main]
 async fn main() -> ExitCode {
@@ -47,19 +43,8 @@ async fn run() -> Result<()> {
         .with(tracing_subscriber::fmt::layer())
         .init();
 
-    let cfg = Config::load()?;
-    let re = cfg
-        .shortcuts
-        .iter()
-        .filter_map(|(_, s)| match s {
-            Shortcut::Table(table) => table
-                .ext
-                .as_ref()
-                .map(|ext| ext.iter().map(|(&k, &v)| (Regex::new(k).unwrap(), v))),
-            Shortcut::Value(_) => None,
-        })
-        .flatten()
-        .collect::<Vec<_>>();
+    let cfg = config::load()?;
+    let port = cfg.port();
 
     let (shutdown_tx, shutdown_rx) = oneshot::channel::<()>();
     tokio::spawn(async move {
@@ -68,28 +53,22 @@ async fn run() -> Result<()> {
         }
     });
 
-    let port = cfg.port();
     let app = Router::new()
         .route("/search", get(search::handler))
         .fallback((|| async { StatusCode::NOT_FOUND }).into_service())
         .layer(Extension(cfg))
-        .layer(Extension(re))
         .layer(
             TraceLayer::new_for_http()
                 .on_request(())
                 .on_response(|res: &Response, latency: Duration, _span: &Span| {
                     debug!(
                         latency = %format!("{}ms", latency.as_millis()),
-                        status = %res.status(),
-                        headers = ?{
-                            let mut headers = res.headers().clone();
-                            headers.remove("content-length");
-                            headers
-                        },
+                        status = %res.status().as_u16(),
+                        location = ?res.headers().get("location"),
                     )
                 })
                 .on_failure(
-                    |e: ServerErrorsFailureClass, _latency: Duration, _span: &Span| error!(%e),
+                    |e: ServerErrorsFailureClass, _latency: Duration, _span: &Span| error!("{e:?}"),
                 ),
         );
 

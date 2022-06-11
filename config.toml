@@ -1,76 +1,92 @@
 # URLs use {} for search query replacement.
-# Shortcut extensions use regex to find a value and {} for replacement.
+# Shortcut extensions use the regex crate's syntax for capture group replacement.
 
 # Local port for the server to bind to.
 port = 8072
 # Default URL if no input is provided.
-default = 'https://duckduckgo.com'
+default = "https://duckduckgo.com"
 # Default search URL if no shortcut was used.
-search = 'https://duckduckgo.com/?q={}'
+search = "https://duckduckgo.com/?q={}"
 # Optionally require a prefix before shortcuts. Can be any string without whitespace.
-# prefix = '!'
+# prefix = "!"
 
 # Crates.io
 [shortcuts.crates]
-default = 'https://crates.io'
-search = 'https://crates.io/search?q={}'
+default = "https://crates.io"
+search = "https://crates.io/search?q={}"
 
 # Docs.rs
 [shortcuts.drs]
-default = 'https://docs.rs'
-search = 'https://docs.rs/{}/latest/{}'
+default = "https://docs.rs"
+search = "https://docs.rs/{}/latest/{}"
 
 # GitHub
 [shortcuts.gh]
-default = 'https://github.com'
-search = 'https://github.com/search?utf8=%E2%9C%93&q={}'
-ext.'(?:@)[\w-]+' = 'https://github.com/{}'
+default = "https://github.com"
+search = "https://github.com/search?utf8=%E2%9C%93&q={}"
+[[shortcuts.gh.ext]]
+regex = '@([\w-]+)'           # gh @user
+url = "https://github.com/$1"
+[[shortcuts.gh.ext]]
+regex = '[\w-]+/[\w-]+'       # gh user/repo
+url = "https://github.com/$0"
 
 # GitHub Gist
 [shortcuts.gist]
-default = 'https://gist.github.com'
-search = 'https://gist.github.com/search?q={}'
+default = "https://gist.github.com"
+search = "https://gist.github.com/search?q={}"
+[[shortcuts.gist.ext]]
+regex = '@([\w-]+)'                # gist @user
+url = "https://gist.github.com/$1"
 
 # GitLab
-[shortcuts.gl]
-default = 'https://gitlab.com'
-search = 'https://gitlab.com/search?utf8=%E2%9C%93&search={}'
-ext.'(?:@)[\w-]+' = 'https://gitlab.com/{}'
+[shortcuts.glab]
+default = "https://gitlab.com"
+search = "https://gitlab.com/search?utf8=%E2%9C%93&search={}"
+[[shortcuts.glab.ext]]
+regex = '@([\w-]+)'           # glab @user
+url = "https://gitlab.com/$1"
+[[shortcuts.glab.ext]]
+regex = '[\w-]+/([\w-]+/?)+'  # glab user/repo | glab user/folder/repo
+url = "https://gitlab.com/$0"
 
 # Lib.rs
 [shortcuts.librs]
-default = 'https://lib.rs'
-search = 'https://lib.rs/search?q={}'
+default = "https://lib.rs"
+search = "https://lib.rs/search?q={}"
 
 # MDN
 [shortcuts.mdn]
-default = 'https://developer.mozilla.org/en-US/'
-search = 'https://developer.mozilla.org/en-US/search?q={}'
+default = "https://developer.mozilla.org/en-US/"
+search = "https://developer.mozilla.org/en-US/search?q={}"
 
 # Reddit
 [shortcuts.r]
-default = 'https://www.reddit.com'
-search = 'https://www.reddit.com/search?q={}'
-# Shortcut extension to the current user profile
-ext.me = 'https://www.reddit.com/user/me'
+default = "https://www.reddit.com"
+search = "https://www.reddit.com/search?q={}"
+[[shortcuts.r.ext]]
+value = "me"                           # r me
+url = "https://www.reddit.com/user/me"
 
 # Rust stable docs
 [shortcuts.rs]
-default = 'https://doc.rust-lang.org/stable/std/'
-search = 'https://doc.rust-lang.org/stable/std/?search={}'
+default = "https://doc.rust-lang.org/stable/std/"
+search = "https://doc.rust-lang.org/stable/std/?search={}"
 
 # Rust nightly docs
 [shortcuts.rsn]
-default = 'https://doc.rust-lang.org/nightly/std/'
-search = 'https://doc.rust-lang.org/nightly/std/?search={}'
+default = "https://doc.rust-lang.org/nightly/std/"
+search = "https://doc.rust-lang.org/nightly/std/?search={}"
 
 # Stack Overflow
 [shortcuts.so]
-default = 'https://stackoverflow.com'
-search = 'https://stackoverflow.com/search?q={}'
+default = "https://stackoverflow.com"
+search = "https://stackoverflow.com/search?q={}"
 
 # Twitter
 [shortcuts.tw]
-default = 'https://twitter.com/explore'
-search = 'https://twitter.com/search?q={}'
-ext.'(?:@)\w+' = 'https://twitter.com/{}'
+default = "https://twitter.com/explore"
+search = "https://twitter.com/search?q={}"
+[[shortcuts.tw.ext]]
+regex = '@(\w+)'               # tw @user
+url = "https://twitter.com/$1"

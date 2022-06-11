@@ -1,11 +1,14 @@
-use std::{collections::HashMap, env, fs};
+use std::collections::HashMap;
+use std::{env, fs};
 
 use anyhow::{bail, Context, Result};
 use once_cell::sync::OnceCell;
+use regex::Regex;
+use serde::de;
 use serde::{Deserialize, Deserializer};
 use tracing::debug;
 
-/// String buffer for config file data.
+/// Buffer for config file data.
 static CFG_BUF: OnceCell<String> = OnceCell::new();
 
 /// Server, search, and shortcut configuration.
@@ -20,7 +23,7 @@ pub struct Config {
     /// Shortcut prefix.
     #[serde(deserialize_with = "deserialize_prefix", default)]
     pub prefix: Option<&'static str>,
-    /// Map of shortcuts to URLs.
+    /// Map of shortcut names to values.
     pub shortcuts: HashMap<&'static str, Shortcut>,
 }
 
@@ -28,21 +31,38 @@ pub struct Config {
 #[derive(Debug, Clone, Deserialize)]
 #[serde(untagged)]
 pub enum Shortcut {
-    /// Table with shortcut definitions for multiple URLs.
-    Table(ShortcutTable),
+    /// Shortcut definitions for multiple URLs.
+    Table(ShortcutGroup),
     /// Shortcut to a URL.
     Value(&'static str),
 }
 
 /// Shortcut definitions for multiple URLs.
 #[derive(Debug, Clone, Deserialize)]
-pub struct ShortcutTable {
+pub struct ShortcutGroup {
     /// Default URL if no more arguments were passed to the shortcut.
     pub default: &'static str,
     /// Default search URL for the shortcut.
     pub search: &'static str,
-    /// Shortcut extension to a specific URL. Optionally may contain `{}`.
-    pub ext: Option<HashMap<&'static str, &'static str>>,
+    /// Shortcut extensions to specific URLs.
+    pub ext: Option<Vec<ShortcutExtension>>,
+}
+
+/// Types of shortcut extensions.
+#[derive(Debug, Clone, Deserialize)]
+#[serde(untagged)]
+pub enum ShortcutExtension {
+    /// A regex shortcut extension.
+    Regex {
+        #[serde(deserialize_with = "deserialize_regex")]
+        regex: Regex,
+        url: &'static str,
+    },
+    /// A string shortcut extension.
+    Value {
+        value: &'static str,
+        url: &'static str,
+    },
 }
 
 fn deserialize_prefix<'de, D>(deserializer: D) -> Result<Option<&'de str>, D::Error>
@@ -50,42 +70,54 @@ where
     D: Deserializer<'de>,
 {
     match Option::<&str>::deserialize(deserializer).ok().flatten() {
-        Some(s) if s.is_empty() || s.contains(char::is_whitespace) => Ok(None),
+        Some(s) if s.is_empty() || s.contains(char::is_whitespace) => {
+            Err(de::Error::custom("invalid value"))
+        }
         Some(s) => Ok(Some(s)),
         None => Ok(None),
     }
 }
 
+fn deserialize_regex<'de, D>(deserializer: D) -> Result<Regex, D::Error>
+where
+    D: Deserializer<'de>,
+{
+    let s = <&str>::deserialize(deserializer)?;
+    Regex::new(s).map_err(|_| de::Error::custom("invalid regex"))
+}
+
 impl Config {
-    /// Load the config file.
-    pub fn load() -> Result<Self> {
-        let mut cfg_path = env::current_exe()?.join("config.toml");
-        if !cfg_path.is_file() {
-            cfg_path = env::current_dir()?.join("config.toml");
-
-            if !cfg_path.is_file() {
-                bail!("config not found in the executable's directory or the current directory");
-            }
-        }
-
-        debug!(cfg_path = %cfg_path.display());
-
-        CFG_BUF
-            .set(
-                fs::read_to_string(&cfg_path).with_context(|| {
-                    format!("failed to read config file {}", cfg_path.display())
-                })?,
-            )
-            .unwrap();
-        let cfg = toml::from_str(CFG_BUF.get().unwrap())
-            .with_context(|| format!("failed to deserialize config file {}", cfg_path.display()))?;
-        debug!(?cfg);
-
-        Ok(cfg)
-    }
-
-    /// Returns the local port for the server bind to.
+    /// Returns the local port to bind to.
     pub const fn port(&self) -> u16 {
         self.port
     }
+}
+
+/// Load the config. Checks the current directory or the executable's directory for a
+/// `config.toml` file.
+#[tracing::instrument]
+pub fn load() -> Result<Config> {
+    let mut cfg_path = env::current_exe()?.join("config.toml");
+    if !cfg_path.is_file() {
+        cfg_path = env::current_dir()?.join("config.toml");
+
+        if !cfg_path.is_file() {
+            bail!("config not found in the executable's directory or the current directory");
+        }
+    }
+
+    debug!(cfg_path = %cfg_path.display());
+
+    CFG_BUF
+        .set(
+            fs::read_to_string(&cfg_path)
+                .with_context(|| format!("failed to read config file {}", cfg_path.display()))?,
+        )
+        .unwrap();
+    let cfg = toml::from_str(CFG_BUF.get().unwrap())
+        .with_context(|| format!("failed to deserialize config file {}", cfg_path.display()))?;
+
+    debug!(?cfg);
+
+    Ok(cfg)
 }
