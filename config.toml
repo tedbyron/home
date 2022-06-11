@@ -10,15 +10,13 @@ search = "https://duckduckgo.com/?q={}"
 # Optionally require a prefix before shortcuts. Can be any string without whitespace.
 # prefix = "!"
 
-# Crates.io
-[shortcuts.crates]
-default = "https://crates.io"
-search = "https://crates.io/search?q={}"
-
-# Docs.rs
-[shortcuts.drs]
-default = "https://docs.rs"
-search = "https://docs.rs/{}/latest/{}"
+# The `shortcuts` table can have key->value entries, or key->table entries.
+[shortcuts]
+crates = { default = "https://crates.io", search = "https://crates.io/search?q={}" }
+drs = { default = "https://docs.rs", search = "https://docs.rs/{}/latest/{}" }
+librs = { default = "https://lib.rs", search = "https://lib.rs/search?q={}" }
+ttv = "https://www.twitch.tv/directory/following"
+yt = "https://www.youtube.com/feed/subscriptions"
 
 # GitHub
 [shortcuts.gh]
@@ -49,11 +47,6 @@ url = "https://gitlab.com/$1"
 [[shortcuts.glab.ext]]
 regex = '[\w-]+/([\w-]+/?)+'  # glab user/repo | glab user/folder/repo
 url = "https://gitlab.com/$0"
-
-# Lib.rs
-[shortcuts.librs]
-default = "https://lib.rs"
-search = "https://lib.rs/search?q={}"
 
 # MDN
 [shortcuts.mdn]

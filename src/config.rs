@@ -55,12 +55,16 @@ pub enum ShortcutExtension {
     /// A regex shortcut extension.
     Regex {
         #[serde(deserialize_with = "deserialize_regex")]
+        /// The regex to match; compiled at runtime.
         regex: Regex,
+        /// Shortcut URL with a regex replacement pattern.
         url: &'static str,
     },
     /// A string shortcut extension.
     Value {
+        /// The string to match.
         value: &'static str,
+        /// Shortcut URL.
         url: &'static str,
     },
 }
