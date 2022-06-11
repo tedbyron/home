@@ -1,7 +1,7 @@
 use std::collections::HashMap;
 use std::{env, fs};
 
-use anyhow::{bail, Context, Result};
+use anyhow::{anyhow, bail, Context, Result};
 use once_cell::sync::OnceCell;
 use regex::Regex;
 use serde::de;
@@ -15,7 +15,7 @@ static CFG_BUF: OnceCell<String> = OnceCell::new();
 #[derive(Debug, Clone, Deserialize)]
 pub struct Config {
     /// The local port to bind to.
-    port: u16,
+    pub port: Option<u16>,
     /// Default URL if no input is provided.
     pub default: &'static str,
     /// Default search URL if no shortcut was used.
@@ -90,13 +90,6 @@ where
     Regex::new(s).map_err(|_| de::Error::custom("invalid regex"))
 }
 
-impl Config {
-    /// Returns the local port to bind to.
-    pub const fn port(&self) -> u16 {
-        self.port
-    }
-}
-
 /// Load the config. Checks the current directory or the executable's directory for a
 /// `config.toml` file.
 #[tracing::instrument]
@@ -112,13 +105,13 @@ pub fn load() -> Result<Config> {
 
     debug!(cfg_path = %cfg_path.display());
 
-    CFG_BUF
-        .set(
+    let buf = CFG_BUF
+        .try_insert(
             fs::read_to_string(&cfg_path)
                 .with_context(|| format!("failed to read config file {}", cfg_path.display()))?,
         )
-        .unwrap();
-    let cfg = toml::from_str(CFG_BUF.get().unwrap())
+        .map_err(|_| anyhow!("failed to set config file buffer"))?;
+    let cfg = toml::from_str(buf)
         .with_context(|| format!("failed to deserialize config file {}", cfg_path.display()))?;
 
     debug!(?cfg);

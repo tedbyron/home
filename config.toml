@@ -1,8 +1,8 @@
 # URLs use {} for search query replacement.
 # Shortcut extensions use the regex crate's syntax for capture group replacement.
 
-# Local port for the server to bind to.
-port = 8072
+# Optionally assign a local port for the server to bind to. Defaults to an OS-assigned port.
+# port = 8080
 # Default URL if no input is provided.
 default = "https://duckduckgo.com"
 # Default search URL if no shortcut was used.

@@ -44,15 +44,7 @@ async fn run() -> Result<()> {
         .init();
 
     let cfg = config::load()?;
-    let port = cfg.port();
-
-    let (shutdown_tx, shutdown_rx) = oneshot::channel::<()>();
-    tokio::spawn(async move {
-        if tokio::signal::ctrl_c().await.is_ok() {
-            let _ = shutdown_tx.send(());
-        }
-    });
-
+    let port = cfg.port.unwrap_or_default();
     let app = Router::new()
         .route("/search", get(search::handler))
         .fallback((|| async { StatusCode::NOT_FOUND }).into_service())
@@ -72,11 +64,21 @@ async fn run() -> Result<()> {
                 ),
         );
 
+    let (shutdown_tx, shutdown_rx) = oneshot::channel::<()>();
+    tokio::spawn(async move {
+        if tokio::signal::ctrl_c().await.is_ok() {
+            let _ = shutdown_tx.send(());
+        }
+    });
+
+    let server =
+        Server::try_bind(&SocketAddr::from(([127, 0, 0, 1], port)))?.serve(app.into_make_service());
+    let port = server.local_addr().port();
+
     info!("listening on localhost:{port}");
     info!("make requests to http://localhost:{port}/search/?q=");
 
-    Server::try_bind(&SocketAddr::from(([127, 0, 0, 1], port)))?
-        .serve(app.into_make_service())
+    server
         .with_graceful_shutdown(async {
             let _ = shutdown_rx.await;
         })
