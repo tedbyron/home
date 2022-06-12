@@ -18,7 +18,7 @@ use tracing_subscriber::layer::SubscriberExt;
 use tracing_subscriber::util::SubscriberInitExt;
 
 mod config;
-mod search;
+mod handler;
 
 #[tokio::main]
 async fn main() -> ExitCode {
@@ -45,8 +45,8 @@ async fn run() -> Result<()> {
     let cfg = config::load()?;
     let port = cfg.port;
     let app = Router::new()
-        .route("/", get(search::handler))
-        .fallback(search::handler.into_service())
+        .route("/", get(handler::handler))
+        .fallback(handler::handler.into_service())
         .layer(Extension(cfg))
         .layer(
             TraceLayer::new_for_http()
