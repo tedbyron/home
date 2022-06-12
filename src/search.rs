@@ -1,5 +1,5 @@
 use axum::extract::Query;
-use axum::response::Redirect;
+use axum::response::{IntoResponse, Redirect, Response};
 use axum::Extension;
 use serde::Deserialize;
 
@@ -9,45 +9,59 @@ use crate::config::{Config, Shortcut, ShortcutExtension, ShortcutGroup};
 #[derive(Debug, Deserialize)]
 pub struct Search {
     /// Parameter for the search query.
-    pub q: String,
+    q: String,
 }
 
 /// Handle search a search query using the config file.
-pub async fn handler(
-    Query(Search { ref q }): Query<Search>,
-    Extension(cfg): Extension<Config>,
-) -> Redirect {
-    let args = q.split_whitespace().collect::<Vec<_>>();
+#[allow(clippy::unused_async)]
+pub async fn handler(query: Option<Query<Search>>, Extension(cfg): Extension<Config>) -> Response {
+    if let Some(Query(Search { ref q })) = query {
+        handle_search(q, cfg).into_response()
+    } else {
+        // TODO: serve static HTML page
+        "todo".into_response()
+    }
+}
 
-    match args.first() {
-        Some(s) => match cfg.shortcuts.get(s) {
-            None => Redirect::to(&cfg.search.replace("{}", q)),
-            Some(Shortcut::Table(table)) => match &table.ext {
-                None => {
-                    if args.len() > 1 {
-                        Redirect::to(&table.search.replace("{}", &args[1..].join(" ")))
-                    } else {
-                        Redirect::to(table.default)
-                    }
+fn handle_search(q: &str, cfg: Config) -> Redirect {
+    let split = q.split_whitespace().collect::<Vec<_>>();
+
+    match split.first() {
+        Some(shortcut) => match cfg.shortcuts.get(shortcut) {
+            Some(shortcut_type) => {
+                let args = &split[1..];
+
+                match shortcut_type {
+                    Shortcut::Table(table) => match &table.exts {
+                        Some(ext) => match_ext(args, table, ext),
+                        None => {
+                            if args.is_empty() {
+                                Redirect::to(table.default)
+                            } else {
+                                Redirect::to(&table.search.replace("{}", &args.join(" ")))
+                            }
+                        }
+                    },
+                    Shortcut::Value(url) => Redirect::to(&url.replace("{}", &args.join(" "))),
                 }
-                Some(ext) => match_ext(&args, table, ext),
-            },
-            Some(Shortcut::Value(url)) => Redirect::to(&url.replace("{}", q)),
+            }
+            None => Redirect::to(&cfg.search.replace("{}", q)),
         },
         None => Redirect::to(cfg.default),
     }
 }
 
 /// Handle a shortcut that has extensions.
-fn match_ext(args: &[&str], table: &ShortcutGroup, ext: &[ShortcutExtension]) -> Redirect {
-    args.get(1).map_or_else(
-        || Redirect::to(table.default),
-        |arg| {
-            ext.iter()
+fn match_ext(args: &[&str], table: &ShortcutGroup, exts: &[ShortcutExtension]) -> Redirect {
+    match args.first() {
+        Some(arg) => {
+            let joined = &args.join(" ");
+
+            exts.iter()
                 .find_map(|ext| match ext {
                     ShortcutExtension::Regex { regex, url } => {
-                        if regex.is_match(arg) {
-                            Some(Redirect::to(&regex.replace(arg, *url)))
+                        if regex.is_match(joined) {
+                            Some(Redirect::to(&regex.replace(joined, *url)))
                         } else {
                             None
                         }
@@ -60,7 +74,8 @@ fn match_ext(args: &[&str], table: &ShortcutGroup, ext: &[ShortcutExtension]) ->
                         }
                     }
                 })
-                .unwrap_or_else(|| Redirect::to(&table.search.replace("{}", &args[1..].join(" "))))
-        },
-    )
+                .unwrap_or_else(|| Redirect::to(&table.search.replace("{}", joined)))
+        }
+        None => Redirect::to(table.default),
+    }
 }

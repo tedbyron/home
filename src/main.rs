@@ -6,7 +6,6 @@ use std::time::Duration;
 
 use anyhow::Result;
 use axum::handler::Handler;
-use axum::http::StatusCode;
 use axum::response::Response;
 use axum::routing::get;
 use axum::{Extension, Router, Server};
@@ -26,7 +25,7 @@ async fn main() -> ExitCode {
     match run().await {
         Ok(_) => ExitCode::SUCCESS,
         Err(e) => {
-            error!("{e:?}");
+            error!("{e}");
             ExitCode::FAILURE
         }
     }
@@ -44,10 +43,10 @@ async fn run() -> Result<()> {
         .init();
 
     let cfg = config::load()?;
-    let port = cfg.port.unwrap_or_default();
+    let port = cfg.port;
     let app = Router::new()
-        .route("/search", get(search::handler))
-        .fallback((|| async { StatusCode::NOT_FOUND }).into_service())
+        .route("/", get(search::handler))
+        .fallback(search::handler.into_service())
         .layer(Extension(cfg))
         .layer(
             TraceLayer::new_for_http()
@@ -57,26 +56,25 @@ async fn run() -> Result<()> {
                         latency = %format!("{}ms", latency.as_millis()),
                         status = %res.status().as_u16(),
                         location = ?res.headers().get("location"),
-                    )
+                    );
                 })
                 .on_failure(
-                    |e: ServerErrorsFailureClass, _latency: Duration, _span: &Span| error!("{e:?}"),
+                    |e: ServerErrorsFailureClass, _latency: Duration, _span: &Span| error!("{e}"),
                 ),
         );
 
     let (shutdown_tx, shutdown_rx) = oneshot::channel::<()>();
     tokio::spawn(async move {
-        if tokio::signal::ctrl_c().await.is_ok() {
-            let _ = shutdown_tx.send(());
-        }
+        let _ = tokio::signal::ctrl_c().await;
+        let _ = shutdown_tx.send(());
     });
 
     let server =
         Server::try_bind(&SocketAddr::from(([127, 0, 0, 1], port)))?.serve(app.into_make_service());
     let port = server.local_addr().port();
 
-    info!("listening on localhost:{port}");
-    info!("make requests to http://localhost:{port}/search/?q=");
+    info!("listening on http://localhost:{port}");
+    info!("make requests to http://localhost:{port}/?q=");
 
     server
         .with_graceful_shutdown(async {

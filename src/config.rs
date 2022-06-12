@@ -15,7 +15,7 @@ static CFG_BUF: OnceCell<String> = OnceCell::new();
 #[derive(Debug, Clone, Deserialize)]
 pub struct Config {
     /// The local port to bind to.
-    pub port: Option<u16>,
+    pub port: u16,
     /// Default URL if no input is provided.
     pub default: &'static str,
     /// Default search URL if no shortcut was used.
@@ -45,7 +45,7 @@ pub struct ShortcutGroup {
     /// Default search URL for the shortcut.
     pub search: &'static str,
     /// Shortcut extensions to specific URLs.
-    pub ext: Option<Vec<ShortcutExtension>>,
+    pub exts: Option<Vec<ShortcutExtension>>,
 }
 
 /// Types of shortcut extensions.
@@ -74,11 +74,11 @@ where
     D: Deserializer<'de>,
 {
     match Option::<&str>::deserialize(deserializer).ok().flatten() {
-        Some(s) if s.is_empty() || s.contains(char::is_whitespace) => {
-            Err(de::Error::custom("invalid value"))
+        None | Some("") => Ok(None),
+        Some(s) if s.contains(char::is_whitespace) => {
+            Err(de::Error::custom("value contains whitespace"))
         }
         Some(s) => Ok(Some(s)),
-        None => Ok(None),
     }
 }
 
@@ -111,8 +111,7 @@ pub fn load() -> Result<Config> {
                 .with_context(|| format!("failed to read config file {}", cfg_path.display()))?,
         )
         .map_err(|_| anyhow!("failed to set config file buffer"))?;
-    let cfg = toml::from_str(buf)
-        .with_context(|| format!("failed to deserialize config file {}", cfg_path.display()))?;
+    let cfg = toml::from_str(buf)?;
 
     debug!(?cfg);
 

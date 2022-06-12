@@ -1,8 +1,8 @@
 # URLs use {} for search query replacement.
 # Shortcut extensions use the regex crate's syntax for capture group replacement.
 
-# Optionally assign a local port for the server to bind to. Defaults to an OS-assigned port.
-# port = 8080
+# Local port for the server to bind to.
+port = 8072
 # Default URL if no input is provided.
 default = "https://duckduckgo.com"
 # Default search URL if no shortcut was used.
@@ -10,42 +10,54 @@ search = "https://duckduckgo.com/?q={}"
 # Optionally require a prefix before shortcuts. Can be any string without whitespace.
 # prefix = "!"
 
-# The `shortcuts` table can have key->value entries, or key->table entries.
+# The shortcuts table can have key->value entries, or key->table entries.
 [shortcuts]
 crates = { default = "https://crates.io", search = "https://crates.io/search?q={}" }
-drs = { default = "https://docs.rs", search = "https://docs.rs/{}/latest/{}" }
 librs = { default = "https://lib.rs", search = "https://lib.rs/search?q={}" }
 ttv = "https://www.twitch.tv/directory/following"
-yt = "https://www.youtube.com/feed/subscriptions"
+
+# Docs.rs
+[shortcuts.drs]
+default = "https://docs.rs"
+search = "https://docs.rs/{}/latest/{}"
+[[shortcuts.drs.exts]]
+regex = '(\S+)\s+((:?\S+\s*)+)'                 # drs <crate> <item>
+url = "https://docs.rs/$1/latest/$1/?search=$2"
+[[shortcuts.drs.exts]]
+regex = '(\S+)@(\S+)'            # drs <crate>@<version>
+url = "https://docs.rs/$1/$2/$1"
+[[shortcuts.drs.exts]]
+regex = '(\S+)@(\S+)\s+((:?\S+\s*)+)'       # drs <crate>@version <item>
+url = "https://docs.rs/$1/$2/$1/?search=$3"
 
 # GitHub
 [shortcuts.gh]
 default = "https://github.com"
 search = "https://github.com/search?utf8=%E2%9C%93&q={}"
-[[shortcuts.gh.ext]]
-regex = '@([\w-]+)'           # gh @user
+[[shortcuts.gh.exts]]
+regex = '@(\S+)'              # gh @<user>
 url = "https://github.com/$1"
-[[shortcuts.gh.ext]]
-regex = '[\w-]+/[\w-]+'       # gh user/repo
+[[shortcuts.gh.exts]]
+regex = '\S+/\S+'             # gh <user>/<repo>
 url = "https://github.com/$0"
 
 # GitHub Gist
 [shortcuts.gist]
 default = "https://gist.github.com"
 search = "https://gist.github.com/search?q={}"
-[[shortcuts.gist.ext]]
-regex = '@([\w-]+)'                # gist @user
+[[shortcuts.gist.exts]]
+regex = '@(\S+)'                   # gist @<user>
 url = "https://gist.github.com/$1"
 
 # GitLab
 [shortcuts.glab]
 default = "https://gitlab.com"
 search = "https://gitlab.com/search?utf8=%E2%9C%93&search={}"
-[[shortcuts.glab.ext]]
-regex = '@([\w-]+)'           # glab @user
+[[shortcuts.glab.exts]]
+regex = '@(\S+)'              # glab @<user>
 url = "https://gitlab.com/$1"
-[[shortcuts.glab.ext]]
-regex = '[\w-]+/([\w-]+/?)+'  # glab user/repo | glab user/folder/repo
+[[shortcuts.glab.exts]]
+regex = '\S+/(\S+/?)+'        # glab <user>/<repo> | glab <user>/<folder>/<repo>
 url = "https://gitlab.com/$0"
 
 # MDN
@@ -57,7 +69,7 @@ search = "https://developer.mozilla.org/en-US/search?q={}"
 [shortcuts.r]
 default = "https://www.reddit.com"
 search = "https://www.reddit.com/search?q={}"
-[[shortcuts.r.ext]]
+[[shortcuts.r.exts]]
 value = "me"                           # r me
 url = "https://www.reddit.com/user/me"
 
@@ -80,6 +92,16 @@ search = "https://stackoverflow.com/search?q={}"
 [shortcuts.tw]
 default = "https://twitter.com/explore"
 search = "https://twitter.com/search?q={}"
-[[shortcuts.tw.ext]]
-regex = '@(\w+)'               # tw @user
+[[shortcuts.tw.exts]]
+regex = '@(\S+)'               # tw @<user>
 url = "https://twitter.com/$1"
+
+# Yarn
+[shortcuts.y]
+default = "https://yarnpkg.com"
+search = "https://yarnpkg.com/?q={}&p=1"
+
+# YouTube
+[shortcuts.yt]
+default = "https://www.youtube.com/feed/subscriptions"
+search = "https://www.youtube.com/results?search_query={}"
