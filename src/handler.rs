@@ -12,7 +12,7 @@ pub struct Search {
     q: String,
 }
 
-/// Handle search a search query using the config file.
+/// Handle an HTTP GET request.
 #[allow(clippy::unused_async)]
 pub async fn handler(query: Option<Query<Search>>, Extension(cfg): Extension<Config>) -> Response {
     if let Some(Query(Search { ref q })) = query {
@@ -23,6 +23,7 @@ pub async fn handler(query: Option<Query<Search>>, Extension(cfg): Extension<Con
     }
 }
 
+/// Handle a search query.
 fn handle_search(q: &str, cfg: Config) -> Redirect {
     let split = q.split_whitespace().collect::<Vec<_>>();
 
