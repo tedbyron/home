@@ -1,0 +1,15 @@
+{
+  "name": "@tedbyron/home-ui",
+  "version": "0.1.0",
+  "author": "Teddy Byron <ted@tedbyron.com>",
+  "repository": "github:tedbyron/home",
+  "private": true,
+  "packageManager": "yarn@3.2.1",
+  "scripts": {
+    "deploy": "wrangler publish src/lib.rs",
+    "dev": "wrangler dev src/lib.rs --local"
+  },
+  "devDependencies": {
+    "wrangler": "^2.0.11"
+  }
+}

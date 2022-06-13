@@ -7,23 +7,15 @@ license = "Apache-2.0"
 authors = ["Teddy Byron <ted@tedbyron.com>"]
 repository = "https://github.com/tedbyron/home"
 
+[lib]
+crate-type = ["cdylib"]
+
+[features]
+default = ["console_error_panic_hook"]
+
 [dependencies]
-anyhow = "1.0.57"
-axum = "0.5.7"
-serde = { version = "1.0.137", features = ["derive"] }
-toml = "0.5.9"
-tower-http = { version = "0.3.4", features = ["trace"] }
-tracing = "0.1.35"
-once_cell = { version = "1.12.0", features = ["parking_lot"] }
-regex = "1.5.6"
-
-[dependencies.tokio]
-version = "1.19.2"
-features = ["rt-multi-thread", "macros", "signal", "parking_lot"]
-
-[dependencies.tracing-subscriber]
-version = "0.3.11"
-features = ["std", "env-filter", "fmt", "ansi", "smallvec", "parking_lot", "registry"]
+console_error_panic_hook = { version = "0.1.7", optional = true }
+worker = "0.0.9"
 
 [profile.dev]
 debug = 0
@@ -31,6 +23,6 @@ debug = 0
 [profile.release]
 codegen-units = 1
 lto = true
-opt-level = 3
+opt-level = "s"
 panic = "abort"
 strip = true
