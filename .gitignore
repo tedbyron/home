@@ -1,8 +1,12 @@
-.DS_Store
+target
+**/*.rs.bk
 
 node_modules
 build
 dist
+package
+.svelte-kit
+*.local
 
 .pnp.*
 .yarn/*
@@ -12,5 +16,14 @@ dist
 !.yarn/sdks
 !.yarn/versions
 
-target
-**/*.rs.bk
+.env
+.env.*
+!.env.example
+
+logs
+*.log
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+.DS_Store

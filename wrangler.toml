@@ -1,5 +1,5 @@
 name = "home"
-main = "build/worker/shim.mjs"
+main = "worker/build/worker/shim.mjs"
 workers_dev = true
 compatibility_date = "2022-01-20"
 

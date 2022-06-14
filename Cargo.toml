@@ -1,23 +1,5 @@
-[package]
-name = "home"
-version = "0.1.0"
-edition = "2021"
-publish = false
-license = "Apache-2.0"
-authors = ["Teddy Byron <ted@tedbyron.com>"]
-description = "Customizable search shortcuts and home page for browsers"
-repository = "https://github.com/tedbyron/home"
-
-[lib]
-crate-type = ["cdylib"]
-
-[features]
-default = ["console_error_panic_hook"]
-
-[dependencies]
-console_error_panic_hook = { version = "0.1.7", optional = true }
-percent-encoding = "2.1.0"
-worker = "0.0.9"
+[workspace]
+members = ["worker"]
 
 [profile.dev]
 debug = 0

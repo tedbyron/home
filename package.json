@@ -1,16 +1,27 @@
 {
-  "name": "@tedbyron/home-ui",
+  "name": "home",
   "version": "0.1.0",
   "author": "Teddy Byron <ted@tedbyron.com>",
+  "license": "Apache-2.0",
   "repository": "github:tedbyron/home",
   "private": true,
   "packageManager": "yarn@3.2.1",
+  "workspaces": [
+    "website",
+    "worker"
+  ],
   "scripts": {
-    "build": "yarn deploy --dry-run",
-    "deploy": "wrangler publish",
-    "dev": "wrangler dev --local"
-  },
-  "devDependencies": {
-    "wrangler": "^2.0.11"
+    "worker:dev": "yarn workspace worker start",
+    "worker:build": "yarn workspace worker build",
+    "worker:deploy": "yarn workspace worker deploy",
+    "website:dev": "yarn workspace website dev",
+    "website:build": "yarn workspace website build",
+    "website:package": "yarn workspace website package",
+    "website:preview": "yarn workspace website preview",
+    "website:prepare": "yarn workspace website prepare",
+    "website:check": "yarn workspace website check",
+    "website:check:watch": "yarn workspace website watch",
+    "website:lint": "yarn workspace website lint",
+    "website:format": "yarn workspace website format"
   }
 }
