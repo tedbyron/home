@@ -1,7 +1,6 @@
 module.exports = {
   root: true,
   extends: ['@tedbyron/eslint-config-svelte3', 'prettier'],
-  ignorePatterns: ['*.cjs'],
   parserOptions: {
     project: './tsconfig.json',
     sourceType: 'module',

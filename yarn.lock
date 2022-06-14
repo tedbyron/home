@@ -433,9 +433,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tedbyron/eslint-config-svelte3@npm:^0.1.4":
-  version: 0.1.4
-  resolution: "@tedbyron/eslint-config-svelte3@npm:0.1.4"
+"@tedbyron/eslint-config-svelte3@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "@tedbyron/eslint-config-svelte3@npm:1.0.0"
   dependencies:
     "@typescript-eslint/eslint-plugin": ^5.28.0
     "@typescript-eslint/parser": ^5.28.0
@@ -447,8 +447,8 @@ __metadata:
   peerDependencies:
     eslint: ^8
     svelte: ^3
-    typescript: ^4
-  checksum: aa87023c83360109eec877928dc5dcdbf3af1cbc1b84ff040aa7b479edc95e15595822eeb3b943d47f3994048c23ef4855113090a864af12717e2892e80b903c
+    typescript: "*"
+  checksum: 4a31bbc27a53bcccc4fa72722258a344a383d1093fb982add44750e919701c7a9c42f94d97f5217c03a300300fb171b8a6059df76d7e3c04f588673cbb46c614
   languageName: node
   linkType: hard
 
@@ -4498,7 +4498,7 @@ __metadata:
   dependencies:
     "@sveltejs/adapter-auto": next
     "@sveltejs/kit": next
-    "@tedbyron/eslint-config-svelte3": ^0.1.4
+    "@tedbyron/eslint-config-svelte3": ^1.0.0
     eslint: ^8.17.0
     eslint-config-prettier: ^8.5.0
     eslint-plugin-svelte3: ^4.0.0
