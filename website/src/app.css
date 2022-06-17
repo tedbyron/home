@@ -1,0 +1,9 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    @apply bg-stone-50 dark:bg-stone-900 dark:text-white;
+  }
+}

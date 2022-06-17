@@ -9,19 +9,5 @@
   "workspaces": [
     "website",
     "worker"
-  ],
-  "scripts": {
-    "worker:dev": "yarn workspace worker start",
-    "worker:build": "yarn workspace worker build",
-    "worker:deploy": "yarn workspace worker deploy",
-    "website:dev": "yarn workspace website dev",
-    "website:build": "yarn workspace website build",
-    "website:package": "yarn workspace website package",
-    "website:preview": "yarn workspace website preview",
-    "website:prepare": "yarn workspace website prepare",
-    "website:check": "yarn workspace website check",
-    "website:check:watch": "yarn workspace website watch",
-    "website:lint": "yarn workspace website lint",
-    "website:format": "yarn workspace website format"
-  }
+  ]
 }
