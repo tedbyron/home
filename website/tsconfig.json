@@ -16,6 +16,7 @@
 
     /* Modules */
     "paths": {
+      "$app/*": [".svelte-kit/runtime/app/*"],
       "$lib": ["src/lib"],
       "$lib/*": ["src/lib/*"],
       "$routes": ["src/routes"],
