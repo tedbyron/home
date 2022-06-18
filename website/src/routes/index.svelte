@@ -25,14 +25,13 @@
     <div
       class="
         flex
-        border border-h-white rounded-lg
+        border border-h-black dark:border-h-white rounded-lg
         focus-within:outline-none
         focus-within:ring-2 focus-within:ring-h-purple
         focus-within:border-h-purple
       "
     >
-      <!-- svelte-ignore a11y-autofocus -->
-      <input type="text" autofocus bind:value={query} class="grow py-3 pl-3 rounded-l-lg" />
+      <input type="text" bind:value={query} class="grow py-3 pl-3 rounded-l-lg" />
 
       <button
         class="px-3 rounded-r-lg transition-colors {loading

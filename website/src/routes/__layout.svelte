@@ -1,3 +1,14 @@
+<script lang="ts" context="module">
+  import { browser } from '$app/env'
+  let colorScheme = '#282a36'
+
+  if (browser) {
+    if (matchMedia('(prefers-color-scheme: light)')) {
+      colorScheme = '#f8f8f2'
+    }
+  }
+</script>
+
 <script lang="ts">
   import { page } from '$app/stores'
 </script>
@@ -5,7 +16,7 @@
 <svelte:head>
   <meta name="description" content="Customizable home page with search shortcuts" />
   <meta name="url" content={$page.url.href} />
-  <meta name="color-scheme" content="#0ea5e9" />
+  <meta name="color-scheme" content={colorScheme} />
   <meta property="og:description" content="Customizable home page with search shortcuts" />
   <meta property="og:url" content={$page.url.href} />
   <meta property="og:type" content="website" />
