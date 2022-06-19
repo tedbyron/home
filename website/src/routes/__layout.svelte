@@ -1,16 +1,10 @@
-<script lang="ts" context="module">
-  import { browser } from '$app/env'
-  let colorScheme = '#282a36'
-
-  if (browser) {
-    if (matchMedia('(prefers-color-scheme: light)')) {
-      colorScheme = '#f8f8f2'
-    }
-  }
-</script>
-
 <script lang="ts">
   import { page } from '$app/stores'
+
+  let colorScheme = '#282a36'
+  if (matchMedia('(prefers-color-scheme: light)').matches) {
+    colorScheme = '#f8f8f2'
+  }
 </script>
 
 <svelte:head>

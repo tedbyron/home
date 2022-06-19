@@ -1,6 +1,6 @@
 <script lang="ts">
   import octicons from '@primer/octicons'
-  import LoadingIcon from '$lib/components/LoadingIcon.svelte'
+  import LoadingIcon from '$components/LoadingIcon.svelte'
 
   let query = ''
   let loading = false
@@ -9,7 +9,7 @@
     // TODO
   }
 
-  const searchIcon = octicons.search.toSVG({
+  const searchIcon: string = octicons.search.toSVG({
     'aria-label': 'Search',
     fill: 'currentColor'
   })

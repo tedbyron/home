@@ -1,44 +1,48 @@
-#![allow(clippy::future_not_send)]
+#![allow(clippy::future_not_send, clippy::wildcard_imports)]
 
 use percent_encoding::percent_decode_str;
-use worker::{
-    event, Context, Env, Headers, Method, Request, Response, Result, RouteContext, Router, Url,
-};
+use worker::*;
 
+mod macros;
+
+#[allow(clippy::missing_errors_doc)]
 #[event(fetch)]
-pub async fn main(req: Request, env: Env, _ctx: Context) -> Result<Response> {
+pub async fn handler(req: Request, env: Env, _ctx: Context) -> Result<Response> {
     #[cfg(feature = "console_error_panic_hook")]
     console_error_panic_hook::set_once();
 
-    Router::with_data(())
-        .get("/", get_handler)
+    Router::new()
+        .get("/", get)
         .or_else_any_method("/*fallback", fallback)
         .run(req, env)
         .await
 }
 
-fn get_handler(req: Request, _: RouteContext<()>) -> Result<Response> {
-    let url = if let Ok(url) = req.url() {
-        url
-    } else {
-        return Response::error("Bad Request: invalid UTF-8 in URL", 400);
-    };
+#[allow(clippy::needless_pass_by_value)]
+fn get(req: Request, _: RouteContext<()>) -> Result<Response> {
+    let url = unwrap_or_500!(req.url());
 
     match url.query() {
         Some(query) => match percent_decode_str(query).decode_utf8() {
-            Ok(query) => Response::ok(query),
-            Err(_) => Response::error("Bad Request: missing query string", 400),
+            Ok(val) => Response::ok(val),
+            Err(e) => return_500!(e),
         },
-        None => Response::redirect_with_status(
-            unsafe { Url::parse("https://duckduckgo.com/").unwrap_unchecked() },
-            303,
-        ),
+        None => Response::redirect_with_status(Url::parse("https://duckduckgo.com/").unwrap(), 303),
     }
 }
 
+fn _get_asset(_req: &Request, _: RouteContext<()>) -> Result<Response> {
+    Response::ok("")
+}
+
+#[allow(clippy::needless_pass_by_value)]
 fn fallback(req: Request, _: RouteContext<()>) -> Result<Response> {
     match req.method() {
-        Method::Get => Response::error("Not Found", 404),
+        Method::Get => {
+            let mut url = unwrap_or_500!(req.url());
+            url.set_path("");
+            Response::redirect(url)
+        }
         _ => Response::error("Method Not Allowed", 405)
             .map(|res| res.with_headers(Headers::from_iter([("Allow", "GET")]))),
     }
