@@ -1,0 +1,28 @@
+{
+  "private": true,
+  "packageManager": "pnpm@7.3.0",
+  "engines": {
+    "node": ">=16",
+    "pnpm": ">=7.3.0"
+  },
+  "scripts": {
+    "build": "nuxt generate",
+    "dev": "nuxt dev",
+    "preview": "nuxt preview",
+    "typecheck": "nuxt typecheck"
+  },
+  "dependencies": {
+    "@vueuse/nuxt": "8.7.4"
+  },
+  "devDependencies": {
+    "@nuxtjs/color-mode": "3.1.4",
+    "@nuxtjs/tailwindcss": "5.1.2",
+    "@tailwindcss/typography": "0.5.2",
+    "cssnano-preset-advanced": "5.3.8",
+    "daisyui": "2.15.4",
+    "nuxt": "3.0.0-rc.4",
+    "typescript": "4.7.4",
+    "vue-tsc": "0.38.1",
+    "wrangler": "2.0.14"
+  }
+}

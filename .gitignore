@@ -1,2 +1,8 @@
-target
-**/*.rs.bk
+node_modules
+*.log*
+.nuxt
+.nitro
+.cache
+.output
+.env
+dist

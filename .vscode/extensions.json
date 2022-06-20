@@ -1,0 +1,8 @@
+{
+  "recommendations": [
+    "bradlc.vscode-tailwindcss",
+    "esbenp.prettier-vscode",
+    "tamasfe.even-better-toml",
+    "vue.volar"
+  ]
+}
