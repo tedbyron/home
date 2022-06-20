@@ -1,6 +1,7 @@
 #![warn(clippy::all, clippy::cargo, clippy::nursery, rust_2018_idioms)]
 #![allow(clippy::future_not_send, clippy::wildcard_imports)]
 
+use kv::KvStore;
 use percent_encoding::percent_decode_str;
 use worker::*;
 
@@ -13,14 +14,28 @@ pub async fn handler(req: Request, env: Env, _ctx: Context) -> Result<Response> 
     console_error_panic_hook::set_once();
 
     Router::new()
-        .get("/", get)
+        .get_async("/", website)
+        .get_async("/search", search)
         .or_else_any_method("/*fallback", fallback)
         .run(req, env)
         .await
 }
 
+async fn website(_req: Request, _: RouteContext<()>) -> Result<Response> {
+    let kv = KvStore::create("home-website_preview").unwrap();
+    let html = kv
+        .get("index.5328025083.html")
+        .text()
+        .await
+        .unwrap()
+        .unwrap();
+
+    Response::ok(html)
+        .map(|res| res.with_headers(Headers::from_iter([("Content-Type", "text/html")])))
+}
+
 #[allow(clippy::needless_pass_by_value)]
-fn get(req: Request, _: RouteContext<()>) -> Result<Response> {
+async fn search(req: Request, _: RouteContext<()>) -> Result<Response> {
     let url = unwrap_or_500!(req.url());
 
     match url.query() {
@@ -30,10 +45,6 @@ fn get(req: Request, _: RouteContext<()>) -> Result<Response> {
         },
         None => Response::redirect_with_status(Url::parse("https://duckduckgo.com/").unwrap(), 303),
     }
-}
-
-fn _get_asset(_req: &Request, _: RouteContext<()>) -> Result<Response> {
-    Response::ok("")
 }
 
 #[allow(clippy::needless_pass_by_value)]

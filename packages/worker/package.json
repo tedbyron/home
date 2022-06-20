@@ -1,4 +1,5 @@
 {
+  "name": "worker",
   "private": true,
   "scripts": {
     "lint": "cargo fmt --check && cargo clippy -- -Dclippy::all -Dclippy::cargo -Dclippy::nursery -Wclippy::pedantic -Drust_2018_idioms",

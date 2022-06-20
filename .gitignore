@@ -4,10 +4,9 @@ target
 node_modules
 build
 dist
+dist-ssr
 .cache
 *.local
-/website/functions/\[\[path\]\].js
-/website/functions/\[\[path\]\].js.map
 .turbo
 tsconfig.tsbuildinfo
 
@@ -17,5 +16,6 @@ tsconfig.tsbuildinfo
 
 logs
 *.log
+pnpm-debug.log*
 
 .DS_Store

@@ -1,4 +1,5 @@
 {
+  "references": [{ "path": "tsconfig.node.json" }],
   "compilerOptions": {
     /* Type Checking */
     "strict": true,
@@ -15,7 +16,7 @@
 
     /* Modules */
     "module": "ESNext",
-    "moduleResolution": "node",
+    "moduleResolution": "Node",
     "resolveJsonModule": true,
 
     /* Emit */
@@ -27,9 +28,13 @@
 
     /* Interop Constraints */
     "allowSyntheticDefaultImports": false,
-    "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "isolatedModules": true,
+
+    /* Language and Environment */
+    "jsx": "react-jsx",
+    "lib": ["DOM", "ESNext"],
+    "target": "ESNext",
 
     /* Projects */
     "composite": true,

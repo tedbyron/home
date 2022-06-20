@@ -17,8 +17,8 @@
   "devDependencies": {
     "miniflare": "2.5.1",
     "turbo": "1.2.16",
-    "website": "workspace:./packages/website",
-    "worker": "workspace:./packages/worker",
+    "website": "workspace:*",
+    "worker": "workspace:*",
     "wrangler": "2.0.14"
   }
 }

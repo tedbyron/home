@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    /* Modules */
+    "module": "esnext",
+    "moduleResolution": "node",
+
+    /* Projects */
+    "composite": true
+  }
+}

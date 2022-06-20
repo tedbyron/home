@@ -3,6 +3,10 @@ main = "packages/worker/build/worker/shim.mjs"
 workers_dev = true
 compatibility_date = "2022-06-19"
 
+kv_namespaces = [
+  { binding = "home-website_preview", id = "", preview_id = "b1d76fb78840473db2e3823e72b81d14" }
+]
+
 [vars]
 WORKERS_RS_VERSION = "0.0.9"
 
@@ -10,4 +14,4 @@ WORKERS_RS_VERSION = "0.0.9"
 command = "pnpm -w build"
 
 [site]
-bucket = "packages/website/public"
+bucket = "packages/website/build"
