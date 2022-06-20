@@ -4,17 +4,12 @@ target
 node_modules
 build
 dist
-package
-.svelte-kit
+.cache
 *.local
-
-.pnp.*
-.yarn/*
-!.yarn/patches
-!.yarn/plugins
-!.yarn/releases
-!.yarn/sdks
-!.yarn/versions
+/website/functions/\[\[path\]\].js
+/website/functions/\[\[path\]\].js.map
+.turbo
+tsconfig.tsbuildinfo
 
 .env
 .env.*
@@ -22,8 +17,5 @@ package
 
 logs
 *.log
-yarn-debug.log*
-yarn-error.log*
-lerna-debug.log*
 
 .DS_Store

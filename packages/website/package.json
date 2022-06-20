@@ -1,0 +1,34 @@
+{
+  "private": true,
+  "sideEffects": false,
+  "scripts": {
+    "postinstall": "remix-esbuild-override",
+    "lint": "tsc",
+    "dev:remix": "remix watch",
+    "dev:miniflare": "NODE_ENV=development miniflare --watch build/index.js",
+    "dev": "pnpm build && concurrently -k 'pnpm:dev:*'",
+    "build": "remix build"
+  },
+  "dependencies": {
+    "@mantine/core": "^4.2.10",
+    "@mantine/hooks": "^4.2.10",
+    "@mantine/ssr": "^4.2.10",
+    "@remix-run/cloudflare": "^1.6.0",
+    "@remix-run/cloudflare-workers": "1.6.0",
+    "@remix-run/react": "^1.6.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^3.13.0",
+    "@esbuild-plugins/node-globals-polyfill": "^0.1.1",
+    "@remix-run/dev": "^1.6.0",
+    "@remix-run/eslint-config": "^1.6.0",
+    "@types/react": "^18.0.14",
+    "@types/react-dom": "^18.0.5",
+    "concurrently": "7.2.2",
+    "eslint": "^8.18.0",
+    "remix-esbuild-override": "^3.0.4",
+    "typescript": "^4.7.4"
+  }
+}

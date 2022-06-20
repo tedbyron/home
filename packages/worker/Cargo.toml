@@ -1,0 +1,20 @@
+[package]
+name = "home-worker"
+version = "0.1.0"
+edition = "2021"
+publish = false
+license-file = "../LICENSE"
+authors = ["Teddy Byron <ted@tedbyron.com>"]
+description = "Customizable home page with search shortcuts"
+repository = "https://github.com/tedbyron/home"
+
+[lib]
+crate-type = ["cdylib"]
+
+[features]
+default = ["console_error_panic_hook"]
+
+[dependencies]
+console_error_panic_hook = { version = "0.1.7", optional = true }
+percent-encoding = "2.1.0"
+worker = "0.0.9"

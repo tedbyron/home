@@ -1,0 +1,16 @@
+{
+  "extends": "../../tsconfig.json",
+  "include": ["remix.config.js", "**/*.ts", "**/*.tsx"],
+  "compilerOptions": {
+    /* Modules */
+    "baseUrl": ".",
+    "paths": {
+      "~/*": ["app/*"]
+    },
+
+    /* Language and Environment */
+    "jsx": "react-jsx",
+    "lib": ["DOM", "ESNext"],
+    "target": "ESNext"
+  }
+}

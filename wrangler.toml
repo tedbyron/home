@@ -1,13 +1,13 @@
 name = "home"
-main = "worker/build/worker/shim.mjs"
+main = "packages/worker/build/worker/shim.mjs"
 workers_dev = true
-compatibility_date = "2022-01-20"
+compatibility_date = "2022-06-19"
 
 [vars]
 WORKERS_RS_VERSION = "0.0.9"
 
 [build]
-command = "cargo install -q worker-build && worker-build --release --no-default-features"
+command = "pnpm -w build"
 
 [site]
-bucket = "website/build"
+bucket = "packages/website/public"

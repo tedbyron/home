@@ -1,0 +1,9 @@
+{
+  "private": true,
+  "scripts": {
+    "lint": "cargo fmt --check && cargo clippy -- -Dclippy::all -Dclippy::cargo -Dclippy::nursery -Wclippy::pedantic -Drust_2018_idioms",
+    "format": "cargo fmt",
+    "dev": "miniflare -m --modules-rule 'ESModule=*.js' --modules-rule 'CompiledWasm=*.wasm' --watch build/worker/shim.mjs",
+    "build": "worker-build --release --no-default-features"
+  }
+}

@@ -1,5 +1,5 @@
 [workspace]
-members = ["worker"]
+members = ["packages/worker"]
 
 [profile.dev]
 debug = 0
