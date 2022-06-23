@@ -1,13 +1,13 @@
 name = "home"
+main = "worker/index.ts"
 workers_dev = true
 compatibility_date = "2022-06-19"
 
 [vars]
-NODE_VERSION = "16.15.1"
+NODE_VERSION = "16"
 
 [build]
 command = "pnpm build"
 
 [site]
 bucket = ".output/public"
-entry-point = ".output"

@@ -3,9 +3,9 @@
 @tailwind utilities;
 
 @layer base {
-  /* :root,
+  :root,
   body,
   main {
     @apply h-full;
-  } */
+  }
 }
