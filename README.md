@@ -7,22 +7,22 @@ TODO: better project name
 
 # Development
 
-Install node 16 with your favorite node version manager
+- Install node 16 with your favorite node version manager
 
-```
-nvm install --lts=gallium --latest-npm
-```
+  ```
+  nvm install --lts=gallium --latest-npm
+  ```
 
-Enable `pnpm` with corepack, or install it manually (<https://pnpm.io/installation>)
+- Enable `pnpm` with corepack, or install it manually (<https://pnpm.io/installation>)
 
-```
-corepack prepare pnpm@7.3.0 --activate
-corepack enable pnpm
-```
+  ```
+  corepack prepare pnpm@7.3.0 --activate
+  corepack enable pnpm
+  ```
 
-Install all dependencies and start the development server
+- Install all dependencies and start the development server
 
-```
-pnpm i
-pnpm dev
-```
+  ```
+  pnpm i
+  pnpm dev
+  ```

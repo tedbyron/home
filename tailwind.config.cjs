@@ -1,8 +1,8 @@
-const defaultTheme = require('tailwindcss/defaultTheme')
+// const defaultTheme = require('tailwindcss/defaultTheme')
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ['./**/*.vue'],
+  content: ['./src/**/*.svelte'],
   theme: {
     extend: {
       fontFamily: {
@@ -16,5 +16,5 @@ module.exports = {
       center: true
     }
   },
-  plugins: [require('@tailwindcss/typography')],
+  plugins: [require('@tailwindcss/typography')]
 }

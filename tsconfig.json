@@ -1,5 +1,6 @@
 {
-  "extends": "./.nuxt/tsconfig.json",
+  "extends": "./.svelte-kit/tsconfig.json",
+  "include": ["src/**/*", "src/**/*.svelte"],
   "compilerOptions": {
     /* Type Checking */
     "allowUnreachableCode": false,
@@ -11,26 +12,10 @@
     "noUncheckedIndexedAccess": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
+    "strict": true,
 
     /* Emit */
-    "importsNotUsedAsValues": "error",
-    "outDir": "",
-
-    /* JavaScript Support */
-    "allowJs": false,
-
-    /* Interop Constraints */
-    "allowSyntheticDefaultImports": false,
-    "forceConsistentCasingInFileNames": true,
-    "isolatedModules": true,
-
-    /* Language and Environment */
-    "lib": ["DOM", "ESNext"],
-
-    /* Projects */
-    "incremental": true,
-
-    /* Completeness */
-    "skipLibCheck": true
+    "noEmit": true,
+    "sourceMap": true
   }
 }
