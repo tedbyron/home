@@ -1,0 +1,24 @@
+{
+  "private": true,
+  "packageManager": "pnpm@7.3.0",
+  "engines": {
+    "node": ">=16",
+    "pnpm": ">=7"
+  },
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "turbo run build --parallel",
+    "dev": "turbo run dev --parallel",
+    "lint": "turbo run lint --parallel",
+    "format": "turbo run format --parallel"
+  },
+  "devDependencies": {
+    "miniflare": "2.5.1",
+    "turbo": "1.2.16",
+    "website": "workspace:*",
+    "worker": "workspace:*",
+    "wrangler": "2.0.14"
+  }
+}
