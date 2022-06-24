@@ -6,12 +6,12 @@
     "pnpm": ">=7.3.0"
   },
   "scripts": {
-    "build": "nuxt generate",
+    "build": "nuxt build",
     "dev": "nuxt dev",
     "preview": "nuxt preview",
     "typecheck": "nuxt typecheck",
     "add": "nuxt add",
-    "mf": "miniflare worker/index.ts -m -s .output/public"
+    "mf": "miniflare .output/server/index.mjs -s .output/public"
   },
   "dependencies": {
     "@vueuse/nuxt": "8.7.4"
