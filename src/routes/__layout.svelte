@@ -8,7 +8,9 @@
   </slot>
 </header>
 
-<slot />
+<main>
+  <slot />
+</main>
 
 <footer>
   <slot name="footer">
@@ -20,4 +22,17 @@
   @tailwind base;
   @tailwind components;
   @tailwind utilities;
+
+  @layer base {
+    :root {
+      @apply bg-home-white text-home-black
+      dark:bg-home-black dark:text-home-white;
+    }
+
+    :root,
+    body,
+    main {
+      @apply h-full;
+    }
+  }
 </style>

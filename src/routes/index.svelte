@@ -1,1 +1,5 @@
-<div class="bg-red-400 text-green-200">Hello</div>
+<script lang="ts">
+  import Search from '$components/Search.svelte'
+</script>
+
+<Search />
