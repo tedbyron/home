@@ -13,8 +13,8 @@
     "serve": "svelte-kit preview",
     "check": "svelte-check --tsconfig ./tsconfig.json",
     "check:watch": "svelte-check --tsconfig ./tsconfig.json --watch",
-    "lint": "prettier -c --ignore-path=.gitignore --plugin-search-dir=. . '!pnpm-lock.yaml' && eslint --ignore-path=.gitignore .",
-    "format": "prettier -w --ignore-path=.gitignore --plugin-search-dir=. . '!pnpm-lock.yaml'"
+    "lint": "prettier -c --plugin-search-dir=. . && eslint --ignore-path=.gitignore .",
+    "format": "prettier -w --plugin-search-dir=. ."
   },
   "devDependencies": {
     "@sveltejs/adapter-auto": "next",
