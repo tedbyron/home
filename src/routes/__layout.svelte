@@ -32,7 +32,7 @@
     :root,
     body,
     main {
-      @apply h-full;
+      @apply min-h-full;
     }
   }
 </style>

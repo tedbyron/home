@@ -23,7 +23,7 @@
     "@tailwindcss/typography": "0.5.2",
     "@typescript-eslint/eslint-plugin": "5.29.0",
     "@typescript-eslint/parser": "5.29.0",
-    "autoprefixer": "10.4.7",
+    "autoprefixer": "10.4.5",
     "cssnano": "5.1.12",
     "cssnano-preset-advanced": "5.3.8",
     "eslint": "8.18.0",

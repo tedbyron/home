@@ -7,7 +7,7 @@ specifiers:
   '@tailwindcss/typography': 0.5.2
   '@typescript-eslint/eslint-plugin': 5.29.0
   '@typescript-eslint/parser': 5.29.0
-  autoprefixer: 10.4.7
+  autoprefixer: 10.4.5
   cssnano: 5.1.12
   cssnano-preset-advanced: 5.3.8
   eslint: 8.18.0
@@ -34,7 +34,7 @@ devDependencies:
   '@tailwindcss/typography': 0.5.2_tailwindcss@3.1.4
   '@typescript-eslint/eslint-plugin': 5.29.0_qqmbkyiaixvppdwswpytuf2hgm
   '@typescript-eslint/parser': 5.29.0_b5e7v2qnwxfo6hmiq56u52mz3e
-  autoprefixer: 10.4.7_postcss@8.4.14
+  autoprefixer: 10.4.5_postcss@8.4.14
   cssnano: 5.1.12_postcss@8.4.14
   cssnano-preset-advanced: 5.3.8_postcss@8.4.14
   eslint: 8.18.0
@@ -740,6 +740,22 @@ packages:
       define-properties: 1.1.4
       es-abstract: 1.20.1
       es-shim-unscopables: 1.0.0
+    dev: true
+
+  /autoprefixer/10.4.5_postcss@8.4.14:
+    resolution: {integrity: sha512-Fvd8yCoA7lNX/OUllvS+aS1I7WRBclGXsepbvT8ZaPgrH24rgXpZzF0/6Hh3ZEkwg+0AES/Osd196VZmYoEFtw==}
+    engines: {node: ^10 || ^12 || >=14}
+    hasBin: true
+    peerDependencies:
+      postcss: ^8.1.0
+    dependencies:
+      browserslist: 4.21.0
+      caniuse-lite: 1.0.30001359
+      fraction.js: 4.2.0
+      normalize-range: 0.1.2
+      picocolors: 1.0.0
+      postcss: 8.4.14
+      postcss-value-parser: 4.2.0
     dev: true
 
   /autoprefixer/10.4.7_postcss@8.4.14:
