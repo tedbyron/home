@@ -7,12 +7,12 @@
   <meta property="og:description" content="Customizable home page with search shortcuts" />
 </svelte:head>
 
-<div class="container flex min-h-screen flex-col">
+<div class="container flex min-h-screen max-w-screen-xl flex-col">
   <header>
     <slot name="header" />
   </header>
 
-  <main class="grow">
+  <main class="flex grow flex-col">
     <slot />
   </main>
 

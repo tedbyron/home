@@ -7,6 +7,6 @@
   <meta property="og:title" content="Home" />
 </svelte:head>
 
-<div class="flex min-h-screen flex-col items-center justify-center">
+<div class="flex grow flex-col items-center justify-center">
   <Search class="w-full max-w-md" />
 </div>
