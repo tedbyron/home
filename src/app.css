@@ -1,0 +1,23 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    @apply bg-home-light text-home-darker dark:bg-home-darker dark:text-home-light;
+  }
+
+  :root,
+  body,
+  main {
+    @apply min-h-screen;
+  }
+
+  input {
+    @apply bg-inherit;
+  }
+
+  :focus-visible {
+    @apply outline-none;
+  }
+}

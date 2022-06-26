@@ -4,4 +4,3 @@ build
 .svelte-kit
 package
 pnpm-lock.yaml
-.eslintrc-auto-import.json

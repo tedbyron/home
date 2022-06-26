@@ -2,7 +2,6 @@
   "root": true,
   "parser": "@typescript-eslint/parser",
   "extends": [
-    "./.eslintrc-auto-import.json",
     "eslint:recommended",
     "plugin:@typescript-eslint/recommended",
     "plugin:@typescript-eslint/recommended-requiring-type-checking",
@@ -28,5 +27,9 @@
     "browser": true,
     "es2017": true,
     "node": true
+  },
+  "rules": {
+    "n/no-unpublished-import": ["error", { "allowModules": ["@sveltejs/kit", "svelte"] }],
+    "n/no-missing-import": ["error", { "allowModules": ["@sveltejs/kit"] }]
   }
 }

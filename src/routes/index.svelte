@@ -2,4 +2,11 @@
   import Search from '$components/Search.svelte'
 </script>
 
-<Search />
+<svelte:head>
+  <title>Home</title>
+  <meta property="og:title" content="Home" />
+</svelte:head>
+
+<div class="flex min-h-screen flex-col items-center justify-center">
+  <Search class="w-full max-w-md" />
+</div>
