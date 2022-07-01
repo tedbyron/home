@@ -1,6 +1,7 @@
 {
   "root": true,
   "parser": "@typescript-eslint/parser",
+  "plugins": ["@typescript-eslint", "svelte3"],
   "extends": [
     "eslint:recommended",
     "plugin:@typescript-eslint/recommended",
@@ -12,24 +13,36 @@
     "plugin:promise/recommended",
     "prettier"
   ],
-  "plugins": ["svelte3", "@typescript-eslint"],
   "ignorePatterns": ["*.cjs", "svelte.config.js"],
   "overrides": [{ "files": ["*.svelte"], "processor": "svelte3/svelte3" }],
   "settings": {
+    "import/parsers": {
+      "@typescript-eslint/parser": [".svelte", ".ts"]
+    },
+    "import/resolver": {
+      "typescript": {
+        "project": "./tsconfig.json"
+      }
+    },
     "svelte3/typescript": true
   },
   "parserOptions": {
-    "project": "./tsconfig.json",
     "ecmaVersion": 2020,
+    "ecmaFeatures": {
+      "impliedStrict": true
+    },
+    "project": "./tsconfig.json",
     "sourceType": "module"
   },
   "env": {
     "browser": true,
-    "es2017": true,
+    "es2022": true,
     "node": true
   },
   "rules": {
-    "n/no-unpublished-import": ["error", { "allowModules": ["@sveltejs/kit", "svelte"] }],
-    "n/no-missing-import": ["error", { "allowModules": ["@sveltejs/kit"] }]
+    //
+    "n/no-unpublished-import": 0,
+    // eslint-plugin-import
+    "n/no-missing-import": 0
   }
 }

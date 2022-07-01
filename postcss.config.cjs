@@ -7,8 +7,7 @@ module.exports = {
           autoprefixer: {},
           cssnano: {
             preset: 'cssnano-preset-advanced',
-            convertValues: { length: true },
-            discardComments: { removeAll: true }
+            convertValues: { length: true }
           }
         }
 }

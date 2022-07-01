@@ -1,4 +1,4 @@
-import adapter from '@sveltejs/adapter-auto'
+import adapter from '@sveltejs/adapter-cloudflare'
 import preprocess from 'svelte-preprocess'
 import icons from 'unplugin-icons/vite'
 
@@ -19,7 +19,6 @@ const config = {
     },
     vite: {
       plugins: [icons({ compiler: 'svelte' })],
-      clearScreen: false,
       envPrefix: 'HOME_'
     }
   }

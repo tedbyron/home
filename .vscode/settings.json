@@ -7,5 +7,15 @@
   "files.associations": {
     "*.css": "tailwindcss"
   },
-  "prettier.documentSelectors": ["**/*.svelte"]
+  "prettier.documentSelectors": ["**/*.svelte"],
+  "eslint.probe": [
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact",
+    "html",
+    "vue",
+    "markdown",
+    "svelte"
+  ]
 }
