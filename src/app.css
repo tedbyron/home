@@ -7,6 +7,11 @@
     @apply bg-home-light text-home-darker dark:bg-home-darker dark:text-home-light;
   }
 
+  :root,
+  body {
+    height: 100%;
+  }
+
   input {
     @apply bg-inherit;
   }
