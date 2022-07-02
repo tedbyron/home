@@ -38,3 +38,21 @@ TODO:
   pnpm i
   pnpm dev
   ```
+
+- View available scripts
+
+  ```
+  pnpm run
+  ```
+
+- Build and preview the website
+
+  ```
+  pnpm build && pnpm preview
+  ```
+
+## Reference
+
+- [`@sveltejs/adapter-cloudflare`](https://github.com/sveltejs/kit/tree/master/packages/adapter-cloudflare#readme)
+- [KV API](https://developers.cloudflare.com/workers/runtime-apis/kv)
+- [KV Limits](https://developers.cloudflare.com/workers/platform/limits/#kv-limits)

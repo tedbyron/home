@@ -1,0 +1,12 @@
+# Only necessary info is defined here to allow manual KV modifications.
+name = "sousuo"
+
+[[kv_namespaces]]
+binding = "SEARCH_ENGINES"
+id = "50dc2c4e0f6e42428e2accd98a8474b4"
+preview_id = "454a9bced0ed457db682685da6f4b15b"
+
+[[kv_namespaces]]
+binding = "DEFAULT_SHORTCUTS"
+id = "0676c29170264974bc84e15df433ecda"
+preview_id = "19cb1ae2abda49a8b7990e0e27622455"

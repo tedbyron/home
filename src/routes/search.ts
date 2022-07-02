@@ -1,13 +1,9 @@
-import type { RequestHandler } from './__types/index'
+import { redirectHome } from '$lib'
+import type { RequestHandler } from './__types/search'
 
 export const get: RequestHandler = ({ url }) => {
   let q = url.searchParams.get('q')
-
-  // no query param, load index page
-  if (q === null) {
-    return {}
-  }
-
+  if (q === null) return redirectHome()
   q = q.trim()
 
   if (q.length === 0) {
