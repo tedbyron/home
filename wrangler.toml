@@ -1,4 +1,4 @@
-# Only necessary info is defined here to allow manual KV modifications.
+# KV config only
 name = "sousuo"
 
 [[kv_namespaces]]

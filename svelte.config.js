@@ -1,6 +1,5 @@
 import adapter from '@sveltejs/adapter-cloudflare'
 import preprocess from 'svelte-preprocess'
-import icons from 'unplugin-icons/vite'
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
@@ -18,7 +17,6 @@ const config = {
       }
     },
     vite: {
-      plugins: [icons({ compiler: 'svelte' })],
       envPrefix: 'HOME_'
     }
   }

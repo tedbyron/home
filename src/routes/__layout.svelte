@@ -12,7 +12,7 @@
     <slot name="header" />
   </header>
 
-  <main class="min-h-full">
+  <main class="h-full">
     <slot />
   </main>
 

@@ -1,9 +1,13 @@
-import { redirectHome } from '$lib'
 import type { RequestHandler } from './__types/search'
 
 export const get: RequestHandler = ({ url }) => {
   let q = url.searchParams.get('q')
-  if (q === null) return redirectHome()
+  if (q === null) {
+    return {
+      status: 400,
+      body: 'Bad Request: missing search parameter "q"'
+    }
+  }
   q = q.trim()
 
   if (q.length === 0) {

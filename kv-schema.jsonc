@@ -1,5 +1,4 @@
-// developer reference for the KV JSON schema
-// see also: https://developers.cloudflare.com/workers/platform/limits/#kv-limits
+// https://developers.cloudflare.com/workers/platform/limits/#kv-limits
 
 {
   // namespace SEARCH_ENGINES: keyed by search engine name
@@ -22,8 +21,8 @@
       // optional shortcut extension table
       "ext": {
         // regex pattern key: replacement string value
-        "/@(\\w+)/": "https://github.com/$1", // gh @<user>
-        "/(\\w+/\\w+)/": "https://github.com/$1" // gh <user>/<repo>
+        "@(\\w+)": "https://github.com/$1", // gh @<user>
+        "(\\w+\\/\\w+)": "https://github.com/$1" // gh <user>/<repo>
       }
     },
     "librs": {
@@ -36,10 +35,10 @@
       "url": "https://docs.rs",
       "search": "https://docs.rs/$&/latest/$&/",
       "ext": {
-        "/(\\w+)\\s+(.+)/": "https://docs.rs/$1/latest/$1/?search=$2", // drs <crate> <search>
-        "/(\\w+)@([\\d\\.]+)/": "https://docs.rs/$1/$2/$1/", // drs <crate>@<version>
+        "(\\w+)\\s+(.+)": "https://docs.rs/$1/latest/$1/?search=$2", // drs <crate> <search>
+        "(\\w+)@([\\d\\.]+)": "https://docs.rs/$1/$2/$1/", // drs <crate>@<version>
         // drs <crate>@<version> <search>
-        "/(\\w+)@([\\d\\.]+)\\s+(.+)/": "https://docs.rs/$1/$2/$1/?search=$3"
+        "(\\w+)@([\\d\\.]+)\\s+(.+)": "https://docs.rs/$1/$2/$1/?search=$3"
       }
     }
   },

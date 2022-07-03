@@ -27,7 +27,7 @@ TODO:
 - Enable `pnpm` with corepack, or install it manually (<https://pnpm.io/installation>)
 
   ```
-  corepack prepare pnpm@7.4.1 --activate
+  corepack prepare pnpm@7.5.0 --activate
   corepack enable pnpm
   pnpm setup
   ```
