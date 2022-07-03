@@ -53,6 +53,6 @@ TODO:
 
 ## Reference
 
-- [`@sveltejs/adapter-cloudflare`](https://github.com/sveltejs/kit/tree/master/packages/adapter-cloudflare#readme)
+- [How KV Works](https://developers.cloudflare.com/workers/learning/how-kv-works)
 - [KV API](https://developers.cloudflare.com/workers/runtime-apis/kv)
 - [KV Limits](https://developers.cloudflare.com/workers/platform/limits/#kv-limits)

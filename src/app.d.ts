@@ -8,10 +8,6 @@ declare namespace App {
       SEARCH_ENGINES: KVNamespace
       DEFAULT_SHORTCUTS: KVNamespace
     }
-    context: {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      waitUntil: (promise: Promise<any>) => void
-      passThroughOnException: () => void
-    }
+    context: ExecutionContext
   }
 }

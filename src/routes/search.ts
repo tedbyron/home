@@ -1,6 +1,6 @@
 import type { RequestHandler } from './__types/search'
 
-export const get: RequestHandler = ({ url }) => {
+export const get: RequestHandler = async ({ url, platform }) => {
   let q = url.searchParams.get('q')
   if (q === null) {
     return {
@@ -11,9 +11,26 @@ export const get: RequestHandler = ({ url }) => {
   q = q.trim()
 
   if (q.length === 0) {
-    return {
-      status: 303,
-      headers: { location: 'https://duckduckgo.com' }
+    try {
+      const url = await platform.env.SEARCH_ENGINES.get('DuckDuckGo')
+      if (url === null) {
+        return {
+          status: 500,
+          body: 'Internal Server Error: missing search engine URL'
+        }
+      }
+
+      return {
+        status: 303,
+        headers: { location: url }
+      }
+    } catch (err) {
+      return {
+        status: 500,
+        body:
+          'Internal Server Error: failed worker KV request' +
+          JSON.stringify(err, Object.getOwnPropertyNames(err))
+      }
     }
   }
 
