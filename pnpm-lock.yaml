@@ -3,6 +3,7 @@ lockfileVersion: 5.4
 specifiers:
   '@cloudflare/workers-types': 3.14.0
   '@mantine/core': 4.2.12
+  '@mantine/form': 4.2.12
   '@mantine/hooks': 4.2.12
   '@mantine/next': 4.2.12
   '@mantine/notifications': 4.2.12
@@ -21,6 +22,7 @@ specifiers:
 
 dependencies:
   '@mantine/core': 4.2.12_ibbq273xj6klliyf4wrcxlizmu
+  '@mantine/form': 4.2.12_react@17.0.2
   '@mantine/hooks': 4.2.12_react@17.0.2
   '@mantine/next': 4.2.12_vy6ghsts7gfhpsaacwo36bpoia
   '@mantine/notifications': 4.2.12_7e5kgvtxhgbmwlaie64d25ybnm
@@ -219,6 +221,14 @@ packages:
     transitivePeerDependencies:
       - '@babel/core'
       - '@types/react'
+    dev: false
+
+  /@mantine/form/4.2.12_react@17.0.2:
+    resolution: {integrity: sha512-CnpkzZr7VVekN3gg/4fMG9DYEqDsOg1jJGGxFKZ7GjR4liwEOsL3FvC+Szi3OlI0ytfLFOg8zU8RCoEO758sQA==}
+    peerDependencies:
+      react: '>=16.8.0'
+    dependencies:
+      react: 17.0.2
     dev: false
 
   /@mantine/hooks/4.2.12_react@17.0.2:

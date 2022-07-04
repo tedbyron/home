@@ -1,4 +1,4 @@
-import ColorSchemeIcon from '$components/ColorSchemeIcon'
+import { ColorSchemeIcon } from '$components'
 import {
   ActionIcon,
   AppShell,
@@ -7,12 +7,12 @@ import {
   Divider,
   Global,
   Group,
-  type MantineColor,
-  type MantineTheme,
   Text,
   ThemeIcon,
   Transition,
-  UnstyledButton
+  UnstyledButton,
+  type MantineColor,
+  type MantineTheme
 } from '@mantine/core'
 import Link from 'next/link'
 import { ReactElement, useState, type PropsWithChildren } from 'react'
@@ -76,7 +76,7 @@ const Layout = ({ children }: Props): JSX.Element => {
       <AppShell
         padding="lg"
         aside={
-          <Transition mounted={opened} transition="fade">
+          <Transition mounted={opened} transition="fade" timingFunction="ease" duration={300}>
             {(styles) => (
               <Aside fixed width={{ xs: 250 }} style={styles}>
                 <Aside.Section p="lg">
@@ -87,9 +87,10 @@ const Layout = ({ children }: Props): JSX.Element => {
 
                     <Burger
                       opened={opened}
-                      onClick={() => setOpened((o) => !o)}
+                      onClick={() => setOpened(false)}
                       size="sm"
                       ml="auto"
+                      aria-label="Close menu"
                     />
                   </Group>
                 </Aside.Section>
@@ -157,7 +158,13 @@ const Layout = ({ children }: Props): JSX.Element => {
         })}
       >
         <Group>
-          <Burger opened={opened} onClick={() => setOpened((o) => !o)} size="sm" ml="auto" />
+          <Burger
+            opened={opened}
+            onClick={() => setOpened(true)}
+            size="sm"
+            ml="auto"
+            aria-label="Open menu"
+          />
         </Group>
 
         {children}
