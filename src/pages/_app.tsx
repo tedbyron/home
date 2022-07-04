@@ -1,4 +1,8 @@
-import { ColorScheme, ColorSchemeProvider } from '$lib/color-scheme'
+import {
+  ColorSchemeProvider,
+  type UserColorScheme,
+  UserColorSchemeProvider
+} from '$lib/color-scheme'
 import { ColorScheme as MantineColorScheme, MantineProvider } from '@mantine/core'
 import { useLocalStorage, useMediaQuery } from '@mantine/hooks'
 import type { AppProps } from 'next/app'
@@ -7,7 +11,7 @@ import { useEffect, useState } from 'react'
 
 const App = ({ Component, pageProps }: AppProps) => {
   const prefersLight = useMediaQuery('(prefers-color-scheme: light)')
-  const [userScheme, setUserScheme] = useLocalStorage<ColorScheme>({
+  const [userScheme, setUserScheme] = useLocalStorage<UserColorScheme>({
     key: 'color-scheme',
     defaultValue: 'system',
     getInitialValueInEffect: true
@@ -24,10 +28,14 @@ const App = ({ Component, pageProps }: AppProps) => {
     }
   }, [prefersLight, userScheme])
 
-  const toggleUserScheme = (value?: ColorScheme) => {
-    if (value !== undefined) setUserScheme(value)
-    else if (userScheme === 'system') setUserScheme(prefersLight ? 'dark' : 'light')
-    else setUserScheme(userScheme === 'light' ? 'dark' : 'light')
+  const toggleUserScheme = (value?: UserColorScheme) => {
+    if (value !== undefined) {
+      setUserScheme(value)
+    } else if (userScheme === 'system') {
+      setUserScheme(prefersLight ? 'dark' : 'light')
+    } else {
+      setUserScheme(userScheme === 'light' ? 'dark' : 'light')
+    }
   }
 
   return (
@@ -41,11 +49,16 @@ const App = ({ Component, pageProps }: AppProps) => {
         <meta property="og:description" content="Customizable home page with search shortcuts" />
       </Head>
 
-      <ColorSchemeProvider colorScheme={userScheme} toggleColorScheme={toggleUserScheme}>
-        <MantineProvider withNormalizeCSS withGlobalStyles theme={{ colorScheme }}>
-          <Component {...pageProps} />
-        </MantineProvider>
-      </ColorSchemeProvider>
+      <UserColorSchemeProvider
+        userColorScheme={userScheme}
+        toggleUserColorScheme={toggleUserScheme}
+      >
+        <ColorSchemeProvider colorScheme={colorScheme}>
+          <MantineProvider withNormalizeCSS withGlobalStyles theme={{ colorScheme }}>
+            <Component {...pageProps} />
+          </MantineProvider>
+        </ColorSchemeProvider>
+      </UserColorSchemeProvider>
     </>
   )
 }

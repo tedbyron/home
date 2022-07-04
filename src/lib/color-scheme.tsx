@@ -1,29 +1,41 @@
-import { createContext, useContext } from 'react'
+import type { ColorScheme as MantineColorScheme } from '@mantine/core'
+import { type PropsWithChildren, createContext, useContext } from 'react'
 
-export type ColorScheme = 'light' | 'dark' | 'system'
-
-interface ColorSchemeContextProps {
-  colorScheme: ColorScheme
-  toggleColorScheme: (colorScheme?: ColorScheme) => void
+/** {@link MantineColorScheme} extended with a `system` setting to be set by media query. */
+export type UserColorScheme = MantineColorScheme | 'system'
+interface UserColorSchemeContextProps {
+  userColorScheme: UserColorScheme
+  toggleUserColorScheme: (colorScheme?: UserColorScheme) => void
 }
+type UserColorSchemeProviderProps = PropsWithChildren<UserColorSchemeContextProps>
+type ColorSchemeProviderProps = PropsWithChildren<{
+  colorScheme: MantineColorScheme
+}>
 
-interface ColorSchemeProviderProps extends ColorSchemeContextProps {
-  children: React.ReactNode
-}
+const UserColorSchemeContext = createContext<UserColorSchemeContextProps>(null!)
 
-const ColorSchemeContext = createContext<ColorSchemeContextProps>(null!)
-
-export const ColorSchemeProvider = ({
-  colorScheme,
-  toggleColorScheme,
+export const UserColorSchemeProvider = ({
+  userColorScheme,
+  toggleUserColorScheme,
   children
-}: ColorSchemeProviderProps) => (
-  <ColorSchemeContext.Provider value={{ colorScheme, toggleColorScheme }}>
+}: UserColorSchemeProviderProps) => (
+  <UserColorSchemeContext.Provider value={{ userColorScheme, toggleUserColorScheme }}>
     {children}
-  </ColorSchemeContext.Provider>
+  </UserColorSchemeContext.Provider>
 )
 
-/** Hook to get the current color scheme. */
-export const useColorScheme = (): ColorSchemeContextProps => {
+/** Hook to get the current {@link UserColorScheme}. */
+export const useUserColorScheme = (): UserColorSchemeContextProps => {
+  return useContext(UserColorSchemeContext)
+}
+
+const ColorSchemeContext = createContext<MantineColorScheme>(null!)
+
+export const ColorSchemeProvider = ({ colorScheme, children }: ColorSchemeProviderProps) => (
+  <ColorSchemeContext.Provider value={colorScheme}>{children}</ColorSchemeContext.Provider>
+)
+
+/** Hook to get the current {@link MantineColorScheme}. */
+export const useColorScheme = (): MantineColorScheme => {
   return useContext(ColorSchemeContext)
 }
