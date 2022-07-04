@@ -1,6 +1,6 @@
 {
-  "extends": "./.svelte-kit/tsconfig.json",
-  "include": ["src/**/*", "src/**/*.svelte"],
+  "include": ["next-env.d.ts", "**/*"],
+  "exclude": ["node_modules"],
   "compilerOptions": {
     /* Type Checking */
     "allowUnreachableCode": false,
@@ -14,9 +14,44 @@
     "noUnusedParameters": true,
     "strict": true,
 
+    /* Modules */
+    "baseUrl": ".",
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "paths": {
+      "~/*": ["./*"],
+      "$components": ["src/components"],
+      "$components/*": ["src/components/*"],
+      "$layouts": ["src/components/layouts"],
+      "$layouts/*": ["src/components/layouts/*"],
+      "$lib": ["src/lib"],
+      "$lib/*": ["src/lib/*"]
+    },
+    "resolveJsonModule": true,
+    "types": ["@cloudflare/workers-types"],
+
     /* Emit */
+    "importsNotUsedAsValues": "error",
     "noEmit": true,
     "sourceMap": true,
+
+    /* JavaScript Support */
+    "allowJs": true,
+    "checkJs": true,
+
+    /* Interop Constraints */
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "isolatedModules": true,
+
+    /* Language and Environment */
+    "jsx": "preserve",
+    "lib": ["DOM", "ESNext"],
+    "target": "ES6",
+
+    /* Projects */
+    "incremental": true,
 
     /* Completeness */
     "skipLibCheck": true

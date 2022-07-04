@@ -21,7 +21,7 @@ TODO:
 - Install node 16 with your favorite node version manager
 
   ```
-  nvm install --lts=gallium --latest-npm
+  nvm install --lts=gallium
   ```
 
 - Enable `pnpm` with corepack, or install it manually (<https://pnpm.io/installation>)
@@ -45,10 +45,10 @@ TODO:
   pnpm run
   ```
 
-- Build and preview the website
+- Build and run the website
 
   ```
-  pnpm build && pnpm preview
+  pnpm start
   ```
 
 ## Reference
