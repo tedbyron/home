@@ -1,26 +1,19 @@
 import Layout from '$layouts/Default'
 import { Box, CloseButton, TextInput } from '@mantine/core'
-import { useForm } from '@mantine/form'
 import type { NextPage } from 'next'
+import { useState, type FormEvent } from 'react'
 import { Search } from 'tabler-icons-react'
 
-interface FormValues {
-  searchQuery: string
-}
-
-const search = ({ searchQuery }: FormValues) => {
-  console.log(searchQuery)
-}
-
 const Index: NextPage = () => {
-  const form = useForm<FormValues>({
-    initialValues: {
-      searchQuery: ''
-    }
-  })
+  const [query, setQuery] = useState('')
 
-  const clearInput = () => {
-    form.setFieldValue('searchQuery', '')
+  const clearInput = (): void => {
+    setQuery('')
+  }
+
+  const search = (e: FormEvent<HTMLFormElement>): void => {
+    e.preventDefault()
+    console.log(query)
   }
 
   return (
@@ -33,20 +26,25 @@ const Index: NextPage = () => {
           marginLeft: 'auto'
         })}
       >
-        <form onSubmit={form.onSubmit(search)}>
+        <form
+          // action="/api/search"
+          // method="get"
+          onSubmit={search}
+        >
           <TextInput
+            type="search"
             variant="filled"
             autoFocus
             autoComplete="off"
             autoCapitalize="off"
             autoCorrect="off"
+            name="q"
+            value={query}
+            onChange={(e) => setQuery(e.currentTarget.value)}
             icon={<Search size={20} aria-hidden />}
-            rightSection={
-              form.values.searchQuery.length > 0 && <CloseButton onClick={clearInput} size="lg" />
-            }
+            rightSection={query.length > 0 && <CloseButton onClick={clearInput} size="lg" />}
             rightSectionWidth={50}
             aria-label="Search query"
-            {...form.getInputProps('searchQuery')}
             radius="md"
             size="lg"
           />
