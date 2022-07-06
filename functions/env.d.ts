@@ -1,11 +1,11 @@
-export interface Env {
-  /** Keys are search engine names, values are {@link KV.SearchEngine}s. */
-  SEARCH_ENGINES: KVNamespace
-  /** Keys are shortcut names, values are {@link KV.Shortcut}s. */
-  DEFAULT_SHORTCUTS: KVNamespace
-}
-
 export namespace KV {
+  interface Env {
+    /** Keys are search engine names, values are {@link KV.SearchEngine}s. */
+    SEARCH_ENGINES: KVNamespace
+    /** Keys are shortcut names, values are {@link KV.Shortcut}s. */
+    DEFAULT_SHORTCUTS: KVNamespace
+  }
+
   /** Search engine. */
   interface SearchEngine {
     /** Search engine site URL used when there is no search query. */
