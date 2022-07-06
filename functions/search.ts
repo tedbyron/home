@@ -62,9 +62,12 @@ export const onRequestGet: PagesFunction<KV.Env> = async ({ request, env }) => {
           return new Response(null, {
             status: 303,
             headers: {
-              Location: rest.match(re)!.reduce((replacement, match, i) => {
-                return replacement.replaceAll(`{${i}}`, encodeURIComponent(match))
-              }, replacement)
+              Location: rest
+                .match(re)!
+                .slice(1)
+                .reduce((replacement, match, i) => {
+                  return replacement.replaceAll(`{${i}}`, encodeURIComponent(match))
+                }, replacement)
             }
           })
         }
