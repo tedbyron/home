@@ -40,7 +40,7 @@ const NavLink = ({ name, href, icon, color }: NavItem): JSX.Element => (
     <UnstyledButton
       component="a"
       aria-label={name}
-      sx={(theme) => ({
+      sx={(theme: MantineTheme) => ({
         display: 'block',
         padding: theme.spacing.xs,
         borderRadius: theme.radius.md,
@@ -77,8 +77,19 @@ const Layout = ({ children }: Props): JSX.Element => {
         padding="lg"
         aside={
           <Transition mounted={opened} transition="fade" timingFunction="ease" duration={300}>
-            {(styles) => (
-              <Aside fixed width={{ xs: 250 }} style={styles}>
+            {(styles: MantineTheme) => (
+              <Aside
+                fixed
+                style={styles}
+                sx={(theme: MantineTheme) => ({
+                  borderLeft: `1px solid ${
+                    theme.colorScheme === 'light' ? theme.colors.gray[4] : theme.colors.dark[3]
+                  }`,
+                  [theme.fn.largerThan('xs')]: {
+                    width: 250
+                  }
+                })}
+              >
                 <Aside.Section p="lg">
                   <Group position="apart">
                     <Group spacing="xs">
@@ -111,7 +122,7 @@ const Layout = ({ children }: Props): JSX.Element => {
                       <UnstyledButton
                         component="a"
                         aria-label="home"
-                        sx={(theme) => ({
+                        sx={(theme: MantineTheme) => ({
                           display: 'block',
                           padding: theme.spacing.xs,
                           borderRadius: theme.radius.md,
@@ -148,14 +159,10 @@ const Layout = ({ children }: Props): JSX.Element => {
             )}
           </Transition>
         }
-        styles={(theme: MantineTheme) => ({
+        styles={{
           root: { display: 'flex', flexDirection: 'column', height: '100%' },
-          body: { flex: 1, minHeight: '100%' },
-          main: {
-            backgroundColor:
-              theme.colorScheme === 'light' ? theme.colors.gray[0] : theme.colors.dark[8]
-          }
-        })}
+          body: { flex: 1, minHeight: '100%' }
+        }}
       >
         <Group>
           <Burger
