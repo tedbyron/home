@@ -1,18 +1,23 @@
 import Layout from '$layouts/Default'
 import { Box, CloseButton, TextInput, type MantineTheme } from '@mantine/core'
 import type { NextPage } from 'next'
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Search } from 'tabler-icons-react'
 
 const Index: NextPage = () => {
   const [query, setQuery] = useState('')
+  const input = useRef<HTMLInputElement>(null!)
+
+  useEffect(() => {
+    input.current.focus()
+  }, [])
 
   const clearInput = (): void => {
     setQuery('')
   }
 
   return (
-    <Layout>
+    <Layout onMenuClose={() => input.current.focus()}>
       <Box
         sx={(theme: MantineTheme) => ({
           maxWidth: theme.breakpoints.xs,
@@ -30,6 +35,7 @@ const Index: NextPage = () => {
             autoCapitalize="off"
             autoCorrect="off"
             name="q"
+            ref={input}
             value={query}
             onChange={(e) => setQuery(e.currentTarget.value)}
             icon={<Search size={20} aria-hidden />}
