@@ -14,9 +14,16 @@ import {
   type MantineColor,
   type MantineTheme
 } from '@mantine/core'
-import { useFocusTrap } from '@mantine/hooks'
+import {
+  useClickOutside,
+  useFocusTrap,
+  useHotkeys,
+  useMergedRef,
+  useReducedMotion,
+  type HotkeyItem
+} from '@mantine/hooks'
 import Link from 'next/link'
-import { ReactElement, useState, type PropsWithChildren } from 'react'
+import { ReactElement, useCallback, useRef, useState, type PropsWithChildren } from 'react'
 import { Book, BrandGithub, Settings } from 'tabler-icons-react'
 
 interface NavItem {
@@ -57,23 +64,44 @@ const NavLink = ({ name, href, icon, color }: NavItem): JSX.Element => (
 )
 
 type Props = PropsWithChildren<{
+  hotkeys?: HotkeyItem[]
+  onMenuOpen?: () => void
   onMenuClose?: () => void
 }>
 
-const Layout = ({ onMenuClose, children }: Props): JSX.Element => {
+const Layout = ({ hotkeys, onMenuOpen, onMenuClose, children }: Props): JSX.Element => {
   const [menuOpen, setMenuOpen] = useState(false)
-  const focusTrap = useFocusTrap()
+  const closeButton = useRef<HTMLButtonElement>(null!)
 
-  const openMenu = (): void => {
+  const openMenu = useCallback(() => {
     setMenuOpen(true)
-  }
-
-  const closeMenu = (): void => {
+    if (onMenuOpen !== undefined) {
+      onMenuOpen()
+    }
+  }, [onMenuOpen])
+  const closeMenu = useCallback(() => {
     setMenuOpen(false)
     if (onMenuClose !== undefined) {
       onMenuClose()
     }
-  }
+  }, [onMenuClose])
+
+  const reducedMotion = useReducedMotion()
+  const focusTrapRef = useFocusTrap()
+  const clickOutsideRef = useClickOutside(closeMenu)
+  const menu = useMergedRef(focusTrapRef, clickOutsideRef)
+
+  useHotkeys([
+    [
+      'Escape',
+      () => {
+        if (menuOpen) {
+          closeMenu()
+        }
+      }
+    ],
+    ...(hotkeys ?? [])
+  ])
 
   return (
     <>
@@ -88,11 +116,16 @@ const Layout = ({ onMenuClose, children }: Props): JSX.Element => {
       <AppShell
         padding="lg"
         aside={
-          <Transition mounted={menuOpen} transition="fade" timingFunction="ease" duration={300}>
+          <Transition
+            mounted={menuOpen}
+            transition="fade"
+            timingFunction="ease"
+            duration={reducedMotion ? 0 : 300}
+          >
             {(styles: MantineTheme) => (
               <Aside
-                ref={focusTrap}
                 fixed
+                ref={menu}
                 style={styles}
                 sx={(theme: MantineTheme) => ({
                   borderLeft: `1px solid ${
@@ -107,6 +140,7 @@ const Layout = ({ onMenuClose, children }: Props): JSX.Element => {
                   <Group position="apart" sx={{ flexDirection: 'row-reverse' }}>
                     <Burger
                       opened={menuOpen}
+                      ref={closeButton}
                       onClick={closeMenu}
                       size="sm"
                       ml="auto"

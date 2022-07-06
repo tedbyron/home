@@ -1,5 +1,6 @@
 import Layout from '$layouts/Default'
 import { Box, CloseButton, TextInput, type MantineTheme } from '@mantine/core'
+import type { HotkeyItem } from '@mantine/hooks'
 import type { NextPage } from 'next'
 import { useEffect, useRef, useState } from 'react'
 import { Search } from 'tabler-icons-react'
@@ -8,16 +9,22 @@ const Index: NextPage = () => {
   const [query, setQuery] = useState('')
   const input = useRef<HTMLInputElement>(null!)
 
-  useEffect(() => {
-    input.current.focus()
-  }, [])
+  useEffect(() => input.current.focus(), [])
 
-  const clearInput = (): void => {
-    setQuery('')
+  const clearInput = (): void => setQuery('')
+  const selectInput = (): void => {
+    if (document.activeElement !== input.current) {
+      input.current.select()
+    }
   }
 
+  const hotkeys: HotkeyItem[] = [
+    ['/', selectInput],
+    ['mod+k', selectInput]
+  ]
+
   return (
-    <Layout onMenuClose={() => input.current.focus()}>
+    <Layout hotkeys={hotkeys} onMenuClose={selectInput}>
       <Box
         sx={(theme: MantineTheme) => ({
           maxWidth: theme.breakpoints.xs,
@@ -41,7 +48,7 @@ const Index: NextPage = () => {
             icon={<Search size={20} aria-hidden />}
             rightSection={query.length > 0 && <CloseButton onClick={clearInput} size="lg" />}
             rightSectionWidth={50}
-            aria-label="Search query"
+            aria-label="Search"
             radius="md"
             size="lg"
           />
