@@ -1,7 +1,7 @@
 import Layout from '$layouts/Default'
 import { Box, CloseButton, TextInput, type MantineTheme } from '@mantine/core'
 import type { NextPage } from 'next'
-import { useState, type FormEvent } from 'react'
+import { useState } from 'react'
 import { Search } from 'tabler-icons-react'
 
 const Index: NextPage = () => {
@@ -9,11 +9,6 @@ const Index: NextPage = () => {
 
   const clearInput = (): void => {
     setQuery('')
-  }
-
-  const search = (e: FormEvent<HTMLFormElement>): void => {
-    e.preventDefault()
-    console.log(query)
   }
 
   return (
@@ -26,11 +21,7 @@ const Index: NextPage = () => {
           marginLeft: 'auto'
         })}
       >
-        <form
-          // action="/api/search"
-          // method="get"
-          onSubmit={search}
-        >
+        <form action="/search" method="get">
           <TextInput
             type="search"
             variant="filled"

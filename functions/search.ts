@@ -1,6 +1,6 @@
-import type { Env, KV } from './env'
+import type { KV } from './env'
 
-export const onRequestGet: PagesFunction<Env> = async ({ request, env }) => {
+export const onRequestGet: PagesFunction<KV.Env> = async ({ request, env }) => {
   let q = new URL(request.url).searchParams.get('q')
   if (q === null) {
     return new Response('Bad Request: missing search parameter "q"', { status: 400 })
