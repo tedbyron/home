@@ -1,5 +1,5 @@
 import Layout from '$layouts/Default'
-import { Box, CloseButton, TextInput } from '@mantine/core'
+import { Box, CloseButton, TextInput, type MantineTheme } from '@mantine/core'
 import type { NextPage } from 'next'
 import { useState, type FormEvent } from 'react'
 import { Search } from 'tabler-icons-react'
@@ -19,7 +19,7 @@ const Index: NextPage = () => {
   return (
     <Layout>
       <Box
-        sx={(theme) => ({
+        sx={(theme: MantineTheme) => ({
           maxWidth: theme.breakpoints.xs,
           marginTop: 128,
           marginRight: 'auto',

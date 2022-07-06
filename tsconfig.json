@@ -1,5 +1,5 @@
 {
-  "include": ["next-env.d.ts", "**/*"],
+  "include": ["next-env.d.ts", "next.config.mjs", "src/**/*", "functions/**/*"],
   "exclude": ["node_modules"],
   "compilerOptions": {
     /* Type Checking */
@@ -19,7 +19,6 @@
     "module": "ESNext",
     "moduleResolution": "Node",
     "paths": {
-      "~/*": ["./*"],
       "$components": ["src/components"],
       "$components/*": ["src/components/*"],
       "$layouts": ["src/components/layouts"],

@@ -6,9 +6,9 @@
     "pnpm": "7.5.0"
   },
   "scripts": {
-    "dev": "next",
+    "dev": "wrangler pages dev -k 'SEARCH_ENGINES,DEFAULT_SHORTCUTS' -- next",
     "build": "next build && next export",
-    "start": "pnpm build && wrangler pages dev out -k 'SEARCH_ENGINES,DEFAULT_SHORTCUTS'",
+    "start": "pnpm build && wrangler pages dev -k 'SEARCH_ENGINES,DEFAULT_SHORTCUTS' out",
     "check": "tsc -p .",
     "check:watch": "tsc -w -p .",
     "lint": "prettier -c --plugin-search-dir=. --ignore-path=.gitignore . '!pnpm-lock.yaml' && next lint",

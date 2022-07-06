@@ -16,7 +16,7 @@ const ColorSchemeIcon = ({ size = 16 }: Props): JSX.Element => {
     <ActionIcon
       variant="default"
       onClick={() => toggleUserColorScheme()}
-      aria-label="Change the site color scheme"
+      aria-label="Change color scheme"
       radius="md"
     >
       {colorScheme === 'light' ? <Moon size={size} /> : <Sun size={size} />}
