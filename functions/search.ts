@@ -14,7 +14,12 @@ export const onRequestGet: PagesFunction<KV.Env> = async ({ request, env }) => {
       throw new Error('search engine not found')
     }
 
-    return new Response(null, { status: 303, headers: { Location: engine.url } })
+    return new Response(null, {
+      status: 303,
+      headers: {
+        Location: engine.url
+      }
+    })
   }
 
   const [maybeShortcut, ...maybeArgs] = q.split(/\s+/)

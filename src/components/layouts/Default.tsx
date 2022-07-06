@@ -14,14 +14,10 @@ import {
   type MantineColor,
   type MantineTheme
 } from '@mantine/core'
+import { useFocusTrap } from '@mantine/hooks'
 import Link from 'next/link'
 import { ReactElement, useState, type PropsWithChildren } from 'react'
 import { Book, BrandGithub, Settings } from 'tabler-icons-react'
-
-type Props = PropsWithChildren<{
-  header?: ReactElement
-  footer?: ReactElement
-}>
 
 interface NavItem {
   name: string
@@ -60,8 +56,24 @@ const NavLink = ({ name, href, icon, color }: NavItem): JSX.Element => (
   </Link>
 )
 
-const Layout = ({ children }: Props): JSX.Element => {
-  const [opened, setOpened] = useState(false)
+type Props = PropsWithChildren<{
+  onMenuClose?: () => void
+}>
+
+const Layout = ({ onMenuClose, children }: Props): JSX.Element => {
+  const [menuOpen, setMenuOpen] = useState(false)
+  const focusTrap = useFocusTrap()
+
+  const openMenu = (): void => {
+    setMenuOpen(true)
+  }
+
+  const closeMenu = (): void => {
+    setMenuOpen(false)
+    if (onMenuClose !== undefined) {
+      onMenuClose()
+    }
+  }
 
   return (
     <>
@@ -76,9 +88,10 @@ const Layout = ({ children }: Props): JSX.Element => {
       <AppShell
         padding="lg"
         aside={
-          <Transition mounted={opened} transition="fade" timingFunction="ease" duration={300}>
+          <Transition mounted={menuOpen} transition="fade" timingFunction="ease" duration={300}>
             {(styles: MantineTheme) => (
               <Aside
+                ref={focusTrap}
                 fixed
                 style={styles}
                 sx={(theme: MantineTheme) => ({
@@ -91,18 +104,18 @@ const Layout = ({ children }: Props): JSX.Element => {
                 })}
               >
                 <Aside.Section p="lg">
-                  <Group position="apart">
-                    <Group spacing="xs">
-                      <ColorSchemeIcon />
-                    </Group>
-
+                  <Group position="apart" sx={{ flexDirection: 'row-reverse' }}>
                     <Burger
-                      opened={opened}
-                      onClick={() => setOpened(false)}
+                      opened={menuOpen}
+                      onClick={closeMenu}
                       size="sm"
                       ml="auto"
                       aria-label="Close menu"
                     />
+
+                    <Group spacing="xs">
+                      <ColorSchemeIcon />
+                    </Group>
                   </Group>
                 </Aside.Section>
 
@@ -165,13 +178,7 @@ const Layout = ({ children }: Props): JSX.Element => {
         }}
       >
         <Group>
-          <Burger
-            opened={opened}
-            onClick={() => setOpened(true)}
-            size="sm"
-            ml="auto"
-            aria-label="Open menu"
-          />
+          <Burger opened={menuOpen} onClick={openMenu} size="sm" ml="auto" aria-label="Open menu" />
         </Group>
 
         {children}
